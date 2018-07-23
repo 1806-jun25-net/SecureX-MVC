@@ -1,0 +1,41 @@
+﻿@model IEnumerable<SecureXWebApp.Models.Account>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Customer Account @*put an ID here? i.e #00000+@Account.ID*@</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccountType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Funds)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AccountType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Funds)
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
