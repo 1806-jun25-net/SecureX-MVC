@@ -7,5 +7,8 @@ namespace SecureXWebApp.Models
 {
     public class Bank
     {
+        public int Id { get; set; }
+        public decimal Reserves { get; set; }
+        public string City { get; set; }
     }
 }
