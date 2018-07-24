@@ -1,0 +1,47 @@
+﻿@model SecureXWebApp.Models.CreditCard
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Credit Card</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreditLimit)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreditLimit)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrentDebt)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CurrentDebt)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreditCardNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreditCardNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CustomerId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to credit cards</a>
+</div>
