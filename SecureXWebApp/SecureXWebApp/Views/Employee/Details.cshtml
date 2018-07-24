@@ -1,0 +1,23 @@
+﻿@model SecureXWebApp.Models.Employee
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Employee</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.BankId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BankId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to employees</a>
+</div>
