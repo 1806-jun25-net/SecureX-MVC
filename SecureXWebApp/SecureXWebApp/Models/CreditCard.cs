@@ -13,7 +13,7 @@ namespace SecureXWebApp.Models
         public int Id { get; set; }
 
         [Required]
-        [Range(0.00, 10000.00)]
+        [Range(0.00, 2000.00)]
         [Display(Name = "Credit Limit")]
         public decimal CreditLimit { get; set; }
 
