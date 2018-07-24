@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SecureXWebApp.Controllers
 {
+    /// <summary>
+    /// Controller functionality primarily admin level accessible only
+    /// </summary>
+    [Authorize]
     public class CustomerController : Controller
     {
         // GET: Customer
@@ -16,6 +21,9 @@ namespace SecureXWebApp.Controllers
         }
 
         // GET: Customer/Details/5
+        //Customer may fetch their own 'customer details'
+        //Implement: how to redirect from this 'details' view based on customer/employee
+        [AllowAnonymous]
         public ActionResult Details(int id)
         {
             return View();
