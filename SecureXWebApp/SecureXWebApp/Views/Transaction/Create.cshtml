@@ -1,0 +1,35 @@
+﻿@model SecureXWebApp.Models.Transaction
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>Transaction</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div class="form-group">
+                <label asp-for="Recipient" class="control-label"></label>
+                <input asp-for="Recipient" class="form-control" />
+                <span asp-validation-for="Recipient" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+               @* instance a datetime.now object here and send this as the parameter for datetime*@
+            </div>
+            <div class="form-group">
+                <label asp-for="TransactionAmount" class="control-label"></label>
+                <input asp-for="TransactionAmount" class="form-control" />
+                <span asp-validation-for="TransactionAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@* Redirect from this page somehow *@
+

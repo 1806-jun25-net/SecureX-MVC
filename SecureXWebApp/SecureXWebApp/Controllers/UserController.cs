@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,7 @@ namespace SecureXWebApp.Controllers
     public class UserController : Controller
     {
         // GET: User
+        [Authorize]
         public ActionResult Index()
         {
             return View();
@@ -52,6 +54,7 @@ namespace SecureXWebApp.Controllers
 
         // POST: User/Edit/5
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
@@ -68,6 +71,7 @@ namespace SecureXWebApp.Controllers
         }
 
         // GET: User/Delete/5
+        [Authorize]
         public ActionResult Delete(int id)
         {
             return View();
@@ -75,6 +79,7 @@ namespace SecureXWebApp.Controllers
 
         // POST: User/Delete/5
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
