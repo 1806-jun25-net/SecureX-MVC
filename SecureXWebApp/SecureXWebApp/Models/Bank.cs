@@ -13,7 +13,7 @@ namespace SecureXWebApp.Models
         public int Id { get; set; }
 
         [Required]
-        [Range(1.00, 999999999.99)]
+        [Range(1500000.00, 1000000000000.00)]
         public decimal Reserves { get; set; }
 
         [Required]

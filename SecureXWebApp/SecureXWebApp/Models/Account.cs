@@ -18,7 +18,7 @@ namespace SecureXWebApp.Models
 
         //EA: should this be nullable?
         [Required]
-        [Range(1.00, 999999999.99)]
+        [Range(0.00, 1000000000.00)]
         public decimal? Funds { get; set; }
     }
 }
