@@ -1,0 +1,35 @@
+﻿@model SecureXWebApp.Models.Account
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Account Details</h2>
+
+<div>
+    <h4>Account</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AccountType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AccountType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Funds)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Funds)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to account</a>
+</div>

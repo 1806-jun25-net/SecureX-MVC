@@ -1,0 +1,46 @@
+﻿@model SecureXWebApp.Models.Account
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Account</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                Account type: 
+                @if (Model.AccountType == "S")
+                {
+                    @: Savings
+
+                }
+                @if (Model.AccountType == "C")
+                {  
+                    @: Checking 
+                }
+                    
+                
+                <input asp-for="AccountType" class="form-control" />
+                <span asp-validation-for="AccountType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Funds" class="control-label"></label>
+                <input asp-for="Funds" class="form-control" />
+                <span asp-validation-for="Funds" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to account</a>
+</div>
+
