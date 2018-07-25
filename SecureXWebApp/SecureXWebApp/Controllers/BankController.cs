@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,13 @@ namespace SecureXWebApp.Controllers
 {
     public class BankController : Controller
     {
+        public HttpClient HttpClient { get; }
+
+        public BankController(HttpClient httpClient)
+        {
+            HttpClient = httpClient;
+        }
+
         // GET: Bank
         public ActionResult Index()
         {

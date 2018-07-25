@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,6 +15,13 @@ namespace SecureXWebApp.Controllers
     [Authorize]
     public class CustomerController : Controller
     {
+        public HttpClient HttpClient { get; }
+
+        public CustomerController(HttpClient httpClient)
+        {
+            HttpClient = httpClient;
+        }
+
         // GET: Customer
         public ActionResult Index()
         {

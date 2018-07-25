@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,13 @@ namespace SecureXWebApp.Controllers
 {
     public class CreditCardController : Controller
     {
+        public HttpClient HttpClient { get; }
+
+        public CreditCardController(HttpClient httpClient)
+        {
+            HttpClient = httpClient;
+        }
+
         // GET: CreditCard
         public ActionResult Index()
         {
