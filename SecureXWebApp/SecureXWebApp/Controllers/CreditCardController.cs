@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using SecureXWebApp.Models;
 
 namespace SecureXWebApp.Controllers
 {
@@ -20,16 +23,54 @@ namespace SecureXWebApp.Controllers
             HttpClient = httpClient;
         }
 
-        // GET: CreditCard
-        public ActionResult Index()
+        //GET: CreditCard
+        //ELA async
+        [Authorize]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var uri = ServiceUri + "CreditCard/Index";
+            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            try
+            {
+                var response = await HttpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View("Error : CreditCard/Index");
+                }
+                string jsonString = await response.Content.ReadAsStringAsync();
+                List<CreditCard> users = JsonConvert.DeserializeObject<List<CreditCard>>(jsonString);
+                return View(users);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            return View("Error : CreditCard/Index");
         }
+        
 
         // GET: CreditCard/Details/5
-        public ActionResult Details(int id)
+        //ELA async
+        public async Task<IActionResult> Details(CreditCard CreditCard)
         {
-            return View();
+            var uri = ServiceUri + $"CreditCard/{CreditCard.Id}";
+            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            try
+            {
+                var response = await HttpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View($"Error : CreditCard/{CreditCard.Id}");
+                }
+                string jsonString = await response.Content.ReadAsStringAsync();
+                CreditCard creditcard = JsonConvert.DeserializeObject<List<CreditCard>>(jsonString).FirstOrDefault(x => x.Id == CreditCard.Id);
+                return View(creditcard);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            return View($"Error : CreditCard/{CreditCard.Id}");
         }
 
         // GET: CreditCard/Create
@@ -39,20 +80,37 @@ namespace SecureXWebApp.Controllers
         }
 
         // POST: CreditCard/Create
+        //ELA async
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(CreditCard CreditCard)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(CreditCard);
+            }
             try
             {
-                // TODO: Add insert logic here
+                string jsonString = JsonConvert.SerializeObject(CreditCard);
+                var uri = ServiceUri + $"CreditCard/{CreditCard.Id}";
+                var request = new HttpRequestMessage(HttpMethod.Post, uri)
+                {
+                    // we set what the Content-Type header will be here
+                    Content = new StringContent(jsonString, Encoding.UTF8, "application/json")
+                };
+
+                var response = await HttpClient.SendAsync(request);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View($"Error : CreditCard/{CreditCard.Id}");
+                }
 
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return View($"Error : CreditCard/{CreditCard.Id}");
             }
         }
 
@@ -64,20 +122,30 @@ namespace SecureXWebApp.Controllers
         }
 
         // POST: CreditCard/Delete/5
+        //ELA async
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> Delete(CreditCard CreditCard)
         {
-            try
             {
-                // TODO: Add delete logic here
+                var uri = ServiceUri + $"CreditCard/{CreditCard.Id}";
+                var request = new HttpRequestMessage(HttpMethod.Delete, uri);
+                try
+                {
+                    var response = await HttpClient.SendAsync(request);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        return View($"Error: CreditCard/{CreditCard.Id}");
+                    }
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
+                    return View("Credit card was deleted.");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+                return View($"Error in CreditCard/{CreditCard.Id}");
             }
         }
     }
