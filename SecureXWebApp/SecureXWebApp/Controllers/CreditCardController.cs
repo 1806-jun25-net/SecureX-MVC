@@ -11,6 +11,8 @@ namespace SecureXWebApp.Controllers
 {
     public class CreditCardController : Controller
     {
+        private readonly static string ServiceUri = "http://securex-api.azurewebsites.net/api/";
+
         public HttpClient HttpClient { get; }
 
         public CreditCardController(HttpClient httpClient)

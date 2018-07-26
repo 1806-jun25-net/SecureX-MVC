@@ -11,6 +11,8 @@ namespace SecureXWebApp.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly static string ServiceUri = "http://securex-api.azurewebsites.net/api/";
+
         public HttpClient HttpClient { get; }
 
         public HomeController(HttpClient httpClient)

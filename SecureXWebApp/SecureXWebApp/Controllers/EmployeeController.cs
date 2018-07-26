@@ -12,6 +12,8 @@ namespace SecureXWebApp.Controllers
     [Authorize]
     public class EmployeeController : Controller
     {
+        private readonly static string ServiceUri = "http://securex-api.azurewebsites.net/api/";
+
         public HttpClient HttpClient { get; }
 
         public EmployeeController(HttpClient httpClient)
