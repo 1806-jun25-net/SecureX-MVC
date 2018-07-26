@@ -108,7 +108,10 @@ namespace SecureXWebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
             catch
+
             {
                 return View($"Error : Transaction/{Transaction.Id}");
             }
         }
+    }
+}
