@@ -28,7 +28,7 @@ namespace SecureXWebApp.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            var uri = ServiceUri + "Account/Index";
+            var uri = ServiceUri + "Account";
             var request = new HttpRequestMessage(HttpMethod.Get, uri);
             try
             {
