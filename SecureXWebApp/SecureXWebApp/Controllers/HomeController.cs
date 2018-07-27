@@ -9,16 +9,10 @@ using SecureXWebApp.Models;
 
 namespace SecureXWebApp.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : AServiceController
     {
-        private readonly static string ServiceUri = "http://securex-api.azurewebsites.net/api/";
-
-        public HttpClient HttpClient { get; }
-
-        public HomeController(HttpClient httpClient)
-        {
-            HttpClient = httpClient;
-        }
+        public HomeController(HttpClient httpClient) : base(httpClient)
+        { }
 
         public IActionResult Index()
         {

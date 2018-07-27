@@ -10,23 +10,17 @@ using SecureXWebApp.Models;
 
 namespace SecureXWebApp.Controllers
 {
-    public class EmployeeController : Controller
+    public class EmployeeController : AServiceController
     {
-        private readonly static string ServiceUri = "http://securex-api.azurewebsites.net/api/";
-
-        public HttpClient HttpClient { get; }
-
-        public EmployeeController(HttpClient httpClient)
-        {
-            HttpClient = httpClient;
-        }
+        public EmployeeController(HttpClient httpClient) : base(httpClient)
+        { }
 
         // GET: Employee
         //ELA async
         public async Task<IActionResult> Index()
         {
-            var uri = ServiceUri + "Employee";
-            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            var uri = "Employee";
+            var request = CreateRequestToService(HttpMethod.Get, uri);
             try
             {
                 var response = await HttpClient.SendAsync(request);
@@ -49,8 +43,8 @@ namespace SecureXWebApp.Controllers
         //ELA async
         public async Task<IActionResult> Details(Employee Employee)
         {
-            var uri = ServiceUri + $"Employee/{Employee.Id}";
-            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            var uri = $"Employee/{Employee.Id}";
+            var request = CreateRequestToService(HttpMethod.Get, uri);
             try
             {
                 var response = await HttpClient.SendAsync(request);

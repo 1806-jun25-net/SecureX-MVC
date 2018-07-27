@@ -10,23 +10,17 @@ using SecureXWebApp.Models;
 
 namespace SecureXWebApp.Controllers
 {
-    public class BankController : Controller
+    public class BankController : AServiceController
     {
-        private readonly static string ServiceUri = "http://securex-api.azurewebsites.net/api/";
-
-        public HttpClient HttpClient { get; }
-
-        public BankController(HttpClient httpClient)
-        {
-            HttpClient = httpClient;
-        }
+        public BankController(HttpClient httpClient) : base(httpClient)
+        { }
 
         // GET: Bank
         //ELA async        
         public async Task<IActionResult> Index()
         {
-            var uri = ServiceUri + "Bank";
-            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            var uri = "Bank";
+            var request = CreateRequestToService(HttpMethod.Get, uri);
             try
             {
                 var response = await HttpClient.SendAsync(request);
@@ -49,8 +43,8 @@ namespace SecureXWebApp.Controllers
         //ELA async
         public async Task<IActionResult> Details(Bank Bank)
         {
-            var uri = ServiceUri + $"Bank/{Bank.Id}";
-            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            var uri = $"Bank/{Bank.Id}";
+            var request = CreateRequestToService(HttpMethod.Get, uri);
             try
             {
                 var response = await HttpClient.SendAsync(request);

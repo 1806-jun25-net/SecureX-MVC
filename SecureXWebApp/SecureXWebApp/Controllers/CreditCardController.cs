@@ -11,23 +11,17 @@ using SecureXWebApp.Models;
 
 namespace SecureXWebApp.Controllers
 {
-    public class CreditCardController : Controller
+    public class CreditCardController : AServiceController
     {
-        private readonly static string ServiceUri = "http://securex-api.azurewebsites.net/api/";
-
-        public HttpClient HttpClient { get; }
-
-        public CreditCardController(HttpClient httpClient)
-        {
-            HttpClient = httpClient;
-        }
+        public CreditCardController(HttpClient httpClient) : base(httpClient)
+        { }
 
         //GET: CreditCard
         //ELA async
         public async Task<IActionResult> Index()
         {
-            var uri = ServiceUri + "CreditCard";
-            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            var uri = "CreditCard";
+            var request = CreateRequestToService(HttpMethod.Get, uri);
             try
             {
                 var response = await HttpClient.SendAsync(request);
@@ -51,8 +45,8 @@ namespace SecureXWebApp.Controllers
         //ELA async
         public async Task<IActionResult> Details(CreditCard CreditCard)
         {
-            var uri = ServiceUri + $"CreditCard/{CreditCard.Id}";
-            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            var uri = $"CreditCard/{CreditCard.Id}";
+            var request = CreateRequestToService(HttpMethod.Get, uri);
             try
             {
                 var response = await HttpClient.SendAsync(request);
@@ -89,13 +83,8 @@ namespace SecureXWebApp.Controllers
             }
             try
             {
-                string jsonString = JsonConvert.SerializeObject(CreditCard);
-                var uri = ServiceUri + $"CreditCard/{CreditCard.Id}";
-                var request = new HttpRequestMessage(HttpMethod.Post, uri)
-                {
-                    // we set what the Content-Type header will be here
-                    Content = new StringContent(jsonString, Encoding.UTF8, "application/json")
-                };
+                var uri = $"CreditCard/{CreditCard.Id}";
+                var request = CreateRequestToService(HttpMethod.Post, uri, CreditCard);
 
                 var response = await HttpClient.SendAsync(request);
 
@@ -125,8 +114,8 @@ namespace SecureXWebApp.Controllers
         public async Task<IActionResult> Delete(CreditCard CreditCard)
         {
             {
-                var uri = ServiceUri + $"CreditCard/{CreditCard.Id}";
-                var request = new HttpRequestMessage(HttpMethod.Delete, uri);
+                var uri = $"CreditCard/{CreditCard.Id}";
+                var request = CreateRequestToService(HttpMethod.Delete, uri);
                 try
                 {
                     var response = await HttpClient.SendAsync(request);

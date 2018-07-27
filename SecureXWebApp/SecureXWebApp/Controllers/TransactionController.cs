@@ -11,23 +11,17 @@ using SecureXWebApp.Models;
 
 namespace SecureXWebApp.Controllers
 {
-    public class TransactionController : Controller
+    public class TransactionController : AServiceController
     {
-        private readonly static string ServiceUri = "http://securex-api.azurewebsites.net/api/";
-
-        public HttpClient HttpClient { get; }
-
-        public TransactionController(HttpClient httpClient)
-        {
-            HttpClient = httpClient;
-        }
+        public TransactionController(HttpClient httpClient) : base(httpClient)
+        { }
 
         //GET: Transaction
         //ELA async
         public async Task<IActionResult> Index()
         {
-            var uri = ServiceUri + "Transaction";
-            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            var uri = "Transaction";
+            var request = CreateRequestToService(HttpMethod.Get, uri);
             try
             {
                 var response = await HttpClient.SendAsync(request);
@@ -50,8 +44,8 @@ namespace SecureXWebApp.Controllers
         //ELA async
         public async Task<IActionResult> Details(Transaction Transaction)
         {
-            var uri = ServiceUri + $"Transaction/{Transaction.Id}";
-            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            var uri = $"Transaction/{Transaction.Id}";
+            var request = CreateRequestToService(HttpMethod.Get, uri);
             try
             {
                 var response = await HttpClient.SendAsync(request);
@@ -88,13 +82,8 @@ namespace SecureXWebApp.Controllers
             }
             try
             {
-                string jsonString = JsonConvert.SerializeObject(Transaction);
-                var uri = ServiceUri + $"Transaction/{Transaction.Id}";
-                var request = new HttpRequestMessage(HttpMethod.Post, uri)
-                {
-                    // we set what the Content-Type header will be here
-                    Content = new StringContent(jsonString, Encoding.UTF8, "application/json")
-                };
+                var uri = $"Transaction/{Transaction.Id}";
+                var request = CreateRequestToService(HttpMethod.Post, uri, Transaction);
 
                 var response = await HttpClient.SendAsync(request);
 

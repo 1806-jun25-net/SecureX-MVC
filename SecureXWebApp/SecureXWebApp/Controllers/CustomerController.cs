@@ -12,23 +12,17 @@ using SecureXWebApp.Models;
 namespace SecureXWebApp.Controllers
 {
 
-    public class CustomerController : Controller
+    public class CustomerController : AServiceController
     {
-        private readonly static string ServiceUri = "http://securex-api.azurewebsites.net/api/";
-
-        public HttpClient HttpClient { get; }
-
-        public CustomerController(HttpClient httpClient)
-        {
-            HttpClient = httpClient;
-        }
+        public CustomerController(HttpClient httpClient) : base(httpClient)
+        { }
 
         //GET: Customer
         //ELA async
         public async Task<IActionResult> Index()
         {
-            var uri = ServiceUri + "Customer";
-            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            var uri = "Customer";
+            var request = CreateRequestToService(HttpMethod.Get, uri);
             try
             {
                 var response = await HttpClient.SendAsync(request);
@@ -51,8 +45,8 @@ namespace SecureXWebApp.Controllers
         //ELA async
         public async Task<IActionResult> Details(Customer Customer)
         {
-            var uri = ServiceUri + $"Customer/{Customer.Id}";
-            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            var uri = $"Customer/{Customer.Id}";
+            var request = CreateRequestToService(HttpMethod.Get, uri);
             try
             {
                 var response = await HttpClient.SendAsync(request);
@@ -89,13 +83,8 @@ namespace SecureXWebApp.Controllers
             }
             try
             {
-                string jsonString = JsonConvert.SerializeObject(Customer);
-                var uri = ServiceUri + $"Customer/{Customer.Id}";
-                var request = new HttpRequestMessage(HttpMethod.Post, uri)
-                {
-                    // we set what the Content-Type header will be here
-                    Content = new StringContent(jsonString, Encoding.UTF8, "application/json")
-                };
+                var uri = $"Customer/{Customer.Id}";
+                var request = CreateRequestToService(HttpMethod.Post, uri, Customer);
 
                 var response = await HttpClient.SendAsync(request);
 
@@ -123,8 +112,8 @@ namespace SecureXWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Customer Customer)
         {
-            var uri = ServiceUri + $"Customer/{Customer.Id}";
-            var request = new HttpRequestMessage(HttpMethod.Put, uri);
+            var uri = $"Customer/{Customer.Id}";
+            var request = CreateRequestToService(HttpMethod.Put, uri);
             try
             {
                 var response = await HttpClient.SendAsync(request);
@@ -159,8 +148,8 @@ namespace SecureXWebApp.Controllers
         public async Task<IActionResult> Delete(Customer Customer)
         {
             {
-                var uri = ServiceUri + $"Customer/{Customer.Id}";
-                var request = new HttpRequestMessage(HttpMethod.Delete, uri);
+                var uri = $"Customer/{Customer.Id}";
+                var request = CreateRequestToService(HttpMethod.Delete, uri);
                 try
                 {
                     var response = await HttpClient.SendAsync(request);
