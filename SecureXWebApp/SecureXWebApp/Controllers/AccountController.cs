@@ -25,7 +25,7 @@ namespace SecureXWebApp.Controllers
 
         //GET: Account
         //ELA async
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> Index()
         {
             var uri = ServiceUri + "Account";
