@@ -70,6 +70,7 @@ namespace SecureXWebApp.Controllers
             return View();
         }
 
+         //Combined User Create into Login/Register
         // POST: User/Create
         //ELA async
         [HttpPost]
@@ -82,23 +83,24 @@ namespace SecureXWebApp.Controllers
             }
             try
             {
-                var uri = $"User/{User.Id}";
+                var uri = "User";
                 var request = CreateRequestToService(HttpMethod.Post, uri, User);
 
                 var response = await HttpClient.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    return View($"Error : User/{User.Id}");
+                    return View("Error");
                 }
 
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View($"Error : User/{User.Id}");
+                return View("Error");
             }
         }
+        
 
         // GET: User/Edit/5
         public ActionResult Edit()

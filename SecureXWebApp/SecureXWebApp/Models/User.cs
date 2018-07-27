@@ -18,7 +18,6 @@ namespace SecureXWebApp.Models
 
         [Required]
         [StringLength(50, MinimumLength = 8)]
-        [RegularExpression(@"^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)).+$")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
