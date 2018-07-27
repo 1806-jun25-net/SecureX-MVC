@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -25,7 +24,6 @@ namespace SecureXWebApp.Controllers
 
         //GET: CreditCard
         //ELA async
-        [Authorize]
         public async Task<IActionResult> Index()
         {
             var uri = ServiceUri + "CreditCard";
@@ -115,7 +113,6 @@ namespace SecureXWebApp.Controllers
         }
 
         // GET: CreditCard/Delete/5
-        [Authorize]
         public ActionResult Delete(int id)
         {
             return View();
@@ -124,7 +121,6 @@ namespace SecureXWebApp.Controllers
         // POST: CreditCard/Delete/5
         //ELA async
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(CreditCard CreditCard)
         {

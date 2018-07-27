@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -11,7 +10,6 @@ using SecureXWebApp.Models;
 
 namespace SecureXWebApp.Controllers
 {
-    [Authorize]
     public class EmployeeController : Controller
     {
         private readonly static string ServiceUri = "http://securex-api.azurewebsites.net/api/";
@@ -25,7 +23,6 @@ namespace SecureXWebApp.Controllers
 
         // GET: Employee
         //ELA async
-        [Authorize]
         public async Task<IActionResult> Index()
         {
             var uri = ServiceUri + "Employee";

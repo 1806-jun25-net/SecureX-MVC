@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -25,7 +24,6 @@ namespace SecureXWebApp.Controllers
 
         //GET: Account
         //ELA async
-        //[Authorize]
         public async Task<IActionResult> Index()
         {
             var uri = ServiceUri + "Account";
@@ -145,7 +143,6 @@ namespace SecureXWebApp.Controllers
         }
 
         // GET: Account/Delete/5
-        [Authorize]
         public ActionResult Delete(int id)
         {
             return View();
@@ -154,7 +151,6 @@ namespace SecureXWebApp.Controllers
         // POST: Account/Delete/5
         //ELA async
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(Account account)
         {
