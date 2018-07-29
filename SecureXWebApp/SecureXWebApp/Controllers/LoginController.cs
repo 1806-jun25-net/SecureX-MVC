@@ -58,7 +58,7 @@ namespace SecureXWebApp.Controllers
                     Password = User.Password
                 };
 
-                HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, "api/Login/Login", login);
+                HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, "api/Login/Register", login);
 
                 HttpResponseMessage apiResponse;
                 try
