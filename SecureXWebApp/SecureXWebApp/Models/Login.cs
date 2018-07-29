@@ -10,7 +10,7 @@ namespace SecureXWebApp.Models
     {
         [Required]
         [StringLength(50, MinimumLength = 2)]
-        public string Username { get; set; }
+        public string UserName { get; set; }
 
         [Required]
         [StringLength(50, MinimumLength = 8)]

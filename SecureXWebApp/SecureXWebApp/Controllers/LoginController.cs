@@ -54,7 +54,7 @@ namespace SecureXWebApp.Controllers
 
                 var login = new Login
                 {
-                    Username = User.UserName,
+                    UserName = User.UserName,
                     Password = User.Password
                 };
 
