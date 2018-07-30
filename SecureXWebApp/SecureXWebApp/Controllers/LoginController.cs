@@ -31,7 +31,7 @@ namespace SecureXWebApp.Controllers
             return View();
         }
 
-        // POST: User/Register
+        //POST: User/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(User User)
@@ -43,7 +43,7 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var uri = $"User";
-                
+
                 var request = CreateRequestToService(HttpMethod.Post, uri, User);
                 var response = await HttpClient.SendAsync(request);
 
@@ -58,7 +58,7 @@ namespace SecureXWebApp.Controllers
                     Password = User.Password
                 };
 
-                HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, "api/Login/Register", login);
+                HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, "Login/Register", login);
 
                 HttpResponseMessage apiResponse;
                 try
@@ -81,7 +81,7 @@ namespace SecureXWebApp.Controllers
             catch
             {
                 return View("Error");
-            }                       
+            }
 
             return RedirectToAction("Index", "Home");
         }
@@ -96,7 +96,7 @@ namespace SecureXWebApp.Controllers
         [HttpPost]
         public async Task<ActionResult> Login(Login login)
         {
-            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, "api/Login/Login", login);
+            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, "Login/Login", login);
 
             HttpResponseMessage apiResponse;
             try
@@ -131,7 +131,7 @@ namespace SecureXWebApp.Controllers
                 return View("Error");
             }
 
-            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, "api/Login/Logout");
+            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, "Login/Logout");
 
             HttpResponseMessage apiResponse;
 
