@@ -34,48 +34,43 @@ namespace SecureXWebApp.Controllers
         //POST: User/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(User User)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(User);
-            }
+        public async Task<ActionResult> Register(RegisterViewModel register)
+        {            
             try
-            {
-                var uri = $"User";
-
-                var request = CreateRequestToService(HttpMethod.Post, uri, User);
-                var response = await HttpClient.SendAsync(request);
-
+            {                
+                // post customer
+                var customer = register.Customer;
+                var uri = "Customer";
+                HttpRequestMessage request = CreateRequestToService(HttpMethod.Post, uri, customer);
+                HttpResponseMessage response = await HttpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)
                 {
                     return View("Error");
                 }
 
-                var login = new Login
-                {
-                    UserName = User.UserName,
-                    Password = User.Password
-                };
-
-                HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, "Login/Register", login);
-
-                HttpResponseMessage apiResponse;
-                try
-                {
-                    apiResponse = await HttpClient.SendAsync(apiRequest);
-                }
-                catch
+                // post user
+                var user = register.User;
+                user.UserName = register.Login.UserName;
+                user.Password = register.Login.Password; // remove password after column gets dropped from table in DB
+                uri = "User";
+                request = CreateRequestToService(HttpMethod.Post, uri, user);
+                response = await HttpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
                 {
                     return View("Error");
                 }
 
-                if (!apiResponse.IsSuccessStatusCode)
+                // post login
+                var login = register.Login;
+                uri = "Login/Register";
+                request = CreateRequestToService(HttpMethod.Post, uri, login);
+                response = await HttpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
                 {
                     return View("Error");
                 }
 
-                PassCookiesToClient(apiResponse);
+                PassCookiesToClient(response);
 
             }
             catch
@@ -83,7 +78,7 @@ namespace SecureXWebApp.Controllers
                 return View("Error");
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: Login/Login

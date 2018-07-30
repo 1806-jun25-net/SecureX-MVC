@@ -17,7 +17,6 @@ namespace SecureXWebApp.Models
         public string Address { get; set; }
 
         [Required]
-        [Phone]
         [Display(Name = "Phone Number")]
         public int PhoneNumber { get; set; }
 
