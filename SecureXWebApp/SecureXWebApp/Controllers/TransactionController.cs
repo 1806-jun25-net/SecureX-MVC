@@ -1,26 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using SecureXWebApp.Models;
 
 namespace SecureXWebApp.Controllers
 {
-    public class TransactionController : Controller
+    public class TransactionController : AServiceController
     {
-        // GET: Transaction
-        [Authorize]
-        public ActionResult Index()
+        public TransactionController(HttpClient httpClient) : base(httpClient)
+        { }
+
+        //GET: Transaction
+        //ELA async
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var uri = "Transaction";
+            var request = CreateRequestToService(HttpMethod.Get, uri);
+            try
+            {
+                var response = await HttpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View("Error : Transaction/Index");
+                }
+                string jsonString = await response.Content.ReadAsStringAsync();
+                List<Transaction> transaction = JsonConvert.DeserializeObject<List<Transaction>>(jsonString);
+                return View(transaction);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            return View("Error : Transaction/Index");
         }
 
         // GET: Transaction/Details/5
-        public ActionResult Details(int id)
+        //ELA async
+        public async Task<IActionResult> Details(Transaction Transaction)
         {
-            return View();
+            var uri = $"Transaction/{Transaction.Id}";
+            var request = CreateRequestToService(HttpMethod.Get, uri);
+            try
+            {
+                var response = await HttpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View($"Error : Transaction/{Transaction.Id}");
+                }
+                string jsonString = await response.Content.ReadAsStringAsync();
+                Transaction transaction = JsonConvert.DeserializeObject<List<Transaction>>(jsonString).FirstOrDefault(x => x.Id == Transaction.Id);
+                return View(transaction);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            return View($"Error : Transaction/{Transaction.Id}");
         }
 
         // GET: Transaction/Create
@@ -30,21 +71,34 @@ namespace SecureXWebApp.Controllers
         }
 
         // POST: Transaction/Create
+        // ELA async
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(Transaction Transaction)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(Transaction);
+            }
             try
             {
-                // TODO: Add insert logic here
+                var uri = $"Transaction/{Transaction.Id}";
+                var request = CreateRequestToService(HttpMethod.Post, uri, Transaction);
+
+                var response = await HttpClient.SendAsync(request);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View($"Error : Transaction/{Transaction.Id}");
+                }
 
                 return RedirectToAction(nameof(Index));
             }
             catch
+
             {
-                return View();
+                return View($"Error : Transaction/{Transaction.Id}");
             }
         }
-
     }
 }
