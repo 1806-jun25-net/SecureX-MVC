@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SecureXWebApp.Models;
 
 namespace SecureXWebApp.Controllers
@@ -34,48 +35,54 @@ namespace SecureXWebApp.Controllers
         //POST: User/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(User User)
+        public async Task<ActionResult> Register(RegisterViewModel register)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(User);
-            }
             try
             {
-                var uri = $"User";
-
-                var request = CreateRequestToService(HttpMethod.Post, uri, User);
-                var response = await HttpClient.SendAsync(request);
-
+                // post login
+                var login = register.Login;
+                var uri = "Login/Register";
+                HttpRequestMessage request = CreateRequestToService(HttpMethod.Post, uri, login);
+                HttpResponseMessage response = await HttpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)
                 {
                     return View("Error");
                 }
 
-                var login = new Login
-                {
-                    UserName = User.UserName,
-                    Password = User.Password
-                };
+                PassCookiesToClient(response);
 
-                HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, "Login/Register", login);
-
-                HttpResponseMessage apiResponse;
-                try
-                {
-                    apiResponse = await HttpClient.SendAsync(apiRequest);
-                }
-                catch
+                // post customer
+                var customer = register.Customer;
+                uri = "Customer";
+                request = CreateRequestToService(HttpMethod.Post, uri, customer);
+                response = await HttpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
                 {
                     return View("Error");
                 }
 
-                if (!apiResponse.IsSuccessStatusCode)
+                // get customer id
+                request = CreateRequestToService(HttpMethod.Get, uri);
+                response = await HttpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
                 {
                     return View("Error");
                 }
+                string jsonString = await response.Content.ReadAsStringAsync();
+                List<Customer> customers = JsonConvert.DeserializeObject<List<Customer>>(jsonString);
+                var customerId = customers.Last().Id;
 
-                PassCookiesToClient(apiResponse);
+                // post user
+                var user = register.User;
+                user.UserName = register.Login.UserName;
+                user.CustomerId = customerId;
+                uri = "User";
+                request = CreateRequestToService(HttpMethod.Post, uri, user);
+                response = await HttpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View("Error");
+                }                
 
             }
             catch
@@ -83,7 +90,7 @@ namespace SecureXWebApp.Controllers
                 return View("Error");
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: Login/Login
@@ -110,12 +117,12 @@ namespace SecureXWebApp.Controllers
 
             if (!apiResponse.IsSuccessStatusCode)
             {
-                if (apiResponse.StatusCode == HttpStatusCode.Forbidden)
+                if (apiResponse.StatusCode == HttpStatusCode.BadRequest)
                 {
-                    return View("AccessDenied");
+                    ViewData["ErrorMessage"] = "Login credentials are invalid. Please try again or register if new.";
+                    return View();
                 }
-                ViewData["ErrorMessage"] = "Login credentials are invalid. Please try again or register if new.";
-                return View();
+                return View("Error");
             }
 
             PassCookiesToClient(apiResponse);

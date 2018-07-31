@@ -15,10 +15,9 @@ namespace SecureXWebApp.Models
         [Required]
         [Display(Name = "Account Type")]
         public string AccountType { get; set; }
-
-        //EA: should this be nullable?
+        
         [Required]
         [Range(0.00, 1000000000.00)]
-        public decimal? Funds { get; set; }
+        public decimal Funds { get; set; }
     }
 }
