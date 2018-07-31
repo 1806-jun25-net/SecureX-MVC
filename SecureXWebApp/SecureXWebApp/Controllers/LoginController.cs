@@ -39,11 +39,23 @@ namespace SecureXWebApp.Controllers
         {
             try
             {
+                // post login
+                var login = register.Login;
+                var uri = "Login/Register";
+                HttpRequestMessage request = CreateRequestToService(HttpMethod.Post, uri, login);
+                HttpResponseMessage response = await HttpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View("Error");
+                }
+
+                PassCookiesToClient(response);
+
                 // post customer
                 var customer = register.Customer;
-                var uri = "Customer";
-                HttpRequestMessage request = CreateRequestToService(HttpMethod.Post, uri, customer);
-                HttpResponseMessage response = await HttpClient.SendAsync(request);
+                uri = "Customer";
+                request = CreateRequestToService(HttpMethod.Post, uri, customer);
+                response = await HttpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)
                 {
                     return View("Error");
@@ -70,19 +82,7 @@ namespace SecureXWebApp.Controllers
                 if (!response.IsSuccessStatusCode)
                 {
                     return View("Error");
-                }
-
-                // post login
-                var login = register.Login;
-                uri = "Login/Register";
-                request = CreateRequestToService(HttpMethod.Post, uri, login);
-                response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View("Error");
-                }
-
-                PassCookiesToClient(response);
+                }                
 
             }
             catch
