@@ -18,7 +18,7 @@ namespace SecureXWebApp.Models
 
         [Required]
         [Display(Name = "Phone Number")]
-        public int PhoneNumber { get; set; }
+        public long PhoneNumber { get; set; }
 
         [Required]
         [StringLength(50, MinimumLength = 2)]

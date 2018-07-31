@@ -63,7 +63,6 @@ namespace SecureXWebApp.Controllers
                 // post user
                 var user = register.User;
                 user.UserName = register.Login.UserName;
-                user.Password = register.Login.Password; // remove password after column gets dropped from table in DB
                 user.CustomerId = customerId;
                 uri = "User";
                 request = CreateRequestToService(HttpMethod.Post, uri, user);

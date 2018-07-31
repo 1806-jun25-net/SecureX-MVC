@@ -17,11 +17,6 @@ namespace SecureXWebApp.Models
         public string UserName { get; set; }
 
         [Required]
-        [StringLength(50, MinimumLength = 8)]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-
-        [Required]
         [StringLength(50, MinimumLength = 2)]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }

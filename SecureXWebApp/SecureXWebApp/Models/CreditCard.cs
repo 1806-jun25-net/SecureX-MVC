@@ -25,7 +25,7 @@ namespace SecureXWebApp.Models
         [Required]
         [CreditCard]
         [Display(Name = "Credit Card Number")]
-        public int CreditCardNumber { get; set; }
+        public long CreditCardNumber { get; set; }
 
         [Required]
         [Display(Name = "Customer ID")]
