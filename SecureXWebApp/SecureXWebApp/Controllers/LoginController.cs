@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SecureXWebApp.Models;
 
 namespace SecureXWebApp.Controllers
@@ -35,9 +36,9 @@ namespace SecureXWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel register)
-        {            
+        {
             try
-            {                
+            {
                 // post customer
                 var customer = register.Customer;
                 var uri = "Customer";
@@ -48,10 +49,22 @@ namespace SecureXWebApp.Controllers
                     return View("Error");
                 }
 
+                // get customer id
+                request = CreateRequestToService(HttpMethod.Get, uri);
+                response = await HttpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View("Error");
+                }
+                string jsonString = await response.Content.ReadAsStringAsync();
+                List<Customer> customers = JsonConvert.DeserializeObject<List<Customer>>(jsonString);
+                var customerId = customers.Last().Id;
+
                 // post user
                 var user = register.User;
                 user.UserName = register.Login.UserName;
                 user.Password = register.Login.Password; // remove password after column gets dropped from table in DB
+                user.CustomerId = customerId;
                 uri = "User";
                 request = CreateRequestToService(HttpMethod.Post, uri, user);
                 response = await HttpClient.SendAsync(request);
