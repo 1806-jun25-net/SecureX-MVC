@@ -117,12 +117,12 @@ namespace SecureXWebApp.Controllers
 
             if (!apiResponse.IsSuccessStatusCode)
             {
-                if (apiResponse.StatusCode == HttpStatusCode.Forbidden)
+                if (apiResponse.StatusCode == HttpStatusCode.BadRequest)
                 {
-                    return View("AccessDenied");
+                    ViewData["ErrorMessage"] = "Login credentials are invalid. Please try again or register if new.";
+                    return View();
                 }
-                ViewData["ErrorMessage"] = "Login credentials are invalid. Please try again or register if new.";
-                return View();
+                return View("Error");
             }
 
             PassCookiesToClient(apiResponse);
