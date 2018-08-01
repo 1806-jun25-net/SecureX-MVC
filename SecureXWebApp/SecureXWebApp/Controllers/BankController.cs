@@ -53,14 +53,14 @@ namespace SecureXWebApp.Controllers
                     return View($"Error : Bank/{Bank.Id}");
                 }
                 string jsonString = await response.Content.ReadAsStringAsync();
-                Bank bank = JsonConvert.DeserializeObject<List<Bank>>(jsonString).FirstOrDefault(x => x.Id == Bank.Id);
+                Bank bank = JsonConvert.DeserializeObject<Bank>(jsonString);
                 return View(bank);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
-            return View($"Error : Bank/{Bank.Id}");
+            return View($"Error: Bank/{Bank.Id}");
         }
 
     }
