@@ -106,29 +106,29 @@ namespace SecureXWebApp.Controllers
         // GET: Account/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(User User)
+        public async Task<IActionResult> Edit(Account Account)
         {
-            var uri = $"User/{User.Id}";
+            var uri = $"Account/{Account.Id}";
             var request = CreateRequestToService(HttpMethod.Put, uri);
             try
             {
                 var response = await HttpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)
                 {
-                    return View($"Error : User/{User.Id}");
+                    return View($"Error : Account/{Account.Id}");
                 }
 
                 string jsonString = await response.Content.ReadAsStringAsync();
-                var user = JsonConvert.DeserializeObject<List<User>>(jsonString).FirstOrDefault(x => x.Id == User.Id);
+                var account = JsonConvert.DeserializeObject<List<Account>>(jsonString).FirstOrDefault(x => x.Id == Account.Id);
 
-                return View(user);
+                return View(account);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
 
-            return View($"Error in User/{User.Id}");
+            return View($"Error in Account/{Account.Id}");
         }
 
         // GET: Account/Delete/5
