@@ -44,19 +44,13 @@ namespace SecureXWebApp.Controllers
                 var uri = "Login/Register";
                 HttpRequestMessage request = CreateRequestToService(HttpMethod.Post, uri, login);
                 HttpResponseMessage response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View("Error");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
 
                 // post login/login
                 uri = "Login/Login";
                 request = CreateRequestToService(HttpMethod.Post, uri, login);
                 response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View("Error");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
 
                 PassCookiesToClient(response);
 
@@ -65,18 +59,12 @@ namespace SecureXWebApp.Controllers
                 uri = "Customer";
                 request = CreateRequestToService(HttpMethod.Post, uri, customer);
                 response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View("Error");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
 
                 // get customer id
                 request = CreateRequestToService(HttpMethod.Get, uri);
                 response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View("Error");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 List<Customer> customers = JsonConvert.DeserializeObject<List<Customer>>(jsonString);
                 var customerId = customers.Last().Id;
@@ -88,10 +76,7 @@ namespace SecureXWebApp.Controllers
                 uri = "User";
                 request = CreateRequestToService(HttpMethod.Post, uri, user);
                 response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View("Error");
-                }                
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
 
             }
             catch
@@ -112,29 +97,29 @@ namespace SecureXWebApp.Controllers
         [HttpPost]
         public async Task<ActionResult> Login(Login login)
         {
-            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, "Login/Login", login);
+            HttpRequestMessage request = CreateRequestToService(HttpMethod.Post, "Login/Login", login);
 
-            HttpResponseMessage apiResponse;
+            HttpResponseMessage response;
             try
             {
-                apiResponse = await HttpClient.SendAsync(apiRequest);
+                response = await HttpClient.SendAsync(request);
             }
             catch (AggregateException)
             {
                 return View("Error");
             }
 
-            if (!apiResponse.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
-                if (apiResponse.StatusCode == HttpStatusCode.BadRequest)
+                if (response.StatusCode == HttpStatusCode.BadRequest)
                 {
                     ViewData["ErrorMessage"] = "Login credentials are invalid. Please try again or register if new.";
                     return View();
                 }
-                return View("Error");
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
             }
 
-            PassCookiesToClient(apiResponse);
+            PassCookiesToClient(response);
 
             return RedirectToAction("Index", "Home");
         }
@@ -147,25 +132,21 @@ namespace SecureXWebApp.Controllers
                 return View("Error");
             }
 
-            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, "Login/Logout");
-
-            HttpResponseMessage apiResponse;
+            HttpRequestMessage request = CreateRequestToService(HttpMethod.Post, "Login/Logout");
+            HttpResponseMessage response;
 
             try
             {
-                apiResponse = await HttpClient.SendAsync(apiRequest);
+                response = await HttpClient.SendAsync(request);
             }
             catch (AggregateException)
             {
                 return View("Error");
             }
 
-            if (!apiResponse.IsSuccessStatusCode)
-            {
-                return View("Error");
-            }
+            if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
 
-            PassCookiesToClient(apiResponse);
+            PassCookiesToClient(response);
 
             return RedirectToAction("Index", "Home");
         }

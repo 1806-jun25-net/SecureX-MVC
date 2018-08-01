@@ -24,19 +24,15 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View("Error : Employee/Index");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 List<Employee> employee = JsonConvert.DeserializeObject<List<Employee>>(jsonString);
                 return View(employee);
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e.ToString());
+                return View("Error");
             }
-            return View("Error : Employee/Index");
         }
 
         // GET: Employee/Details/5
@@ -48,19 +44,15 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View($"Error : Employee/{Employee.Id}");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
-                Employee employee = JsonConvert.DeserializeObject<List<Employee>>(jsonString).FirstOrDefault(x => x.Id == Employee.Id);
+                Employee employee = JsonConvert.DeserializeObject<Employee>(jsonString);
                 return View(employee);
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e.ToString());
+                return View("Error");
             }
-            return View($"Error : Employee/{Employee.Id}");
         }
 
     }
