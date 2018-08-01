@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -43,6 +44,21 @@ namespace SecureXWebApp.Controllers
             }
 
             return apiRequest;
+        }
+
+        protected bool CheckIfErrorStatusCode(HttpResponseMessage response)
+        {
+            if (!response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else return false;
+        }
+
+        protected IActionResult SelectErrorView(HttpResponseMessage response)
+        {
+            if (response.StatusCode == HttpStatusCode.Forbidden) return View("AccessDenied");
+            return View("Error");
         }
     }
 }
