@@ -39,11 +39,20 @@ namespace SecureXWebApp.Controllers
         {
             try
             {
-                // post login
+                // post login/register
                 var login = register.Login;
                 var uri = "Login/Register";
                 HttpRequestMessage request = CreateRequestToService(HttpMethod.Post, uri, login);
                 HttpResponseMessage response = await HttpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return View("Error");
+                }
+
+                // post login/login
+                uri = "Login/Login";
+                request = CreateRequestToService(HttpMethod.Post, uri, login);
+                response = await HttpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)
                 {
                     return View("Error");
@@ -90,7 +99,7 @@ namespace SecureXWebApp.Controllers
                 return View("Error");
             }
 
-            return RedirectToAction("Login", "Login");
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: Login/Login
