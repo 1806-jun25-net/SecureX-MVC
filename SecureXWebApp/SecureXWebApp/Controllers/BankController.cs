@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -24,19 +25,15 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View("Error : Bank/Index");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 List<Bank> banks = JsonConvert.DeserializeObject<List<Bank>>(jsonString);
                 return View(banks);
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e.ToString());
+                return View("Error");
             }
-            return View("Error : Bank/Index");
         }
 
         //GET: User/Details/5
@@ -48,19 +45,15 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View($"Error : Bank/{Bank.Id}");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 Bank bank = JsonConvert.DeserializeObject<Bank>(jsonString);
                 return View(bank);
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e.ToString());
+                return View("Error");
             }
-            return View($"Error: Bank/{Bank.Id}");
         }
 
     }

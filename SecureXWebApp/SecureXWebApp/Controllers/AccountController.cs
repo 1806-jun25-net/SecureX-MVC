@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,19 +26,15 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View("Error : Account/Index");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 List<Account> accounts = JsonConvert.DeserializeObject<List<Account>>(jsonString);
                 return View(accounts);
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e.ToString());
+                return View("Error");
             }
-            return View("Error : Account/Index");
         }
 
         // GET: Account/Details/5
@@ -49,19 +46,15 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View($"Error : Account/{account.Id}");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 Account _account = JsonConvert.DeserializeObject<List<Account>>(jsonString).FirstOrDefault(x => x.Id == account.Id);
                 return View(_account);
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e.ToString());
+                return View("Error");
             }
-            return View($"Error : Account/{account.Id}");
         }
 
         // GET: Account/Create
@@ -87,19 +80,14 @@ namespace SecureXWebApp.Controllers
             {
                 var uri = $"Account/{Account.Id}";
                 var request = CreateRequestToService(HttpMethod.Post, uri, User);
-
                 var response = await HttpClient.SendAsync(request);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View($"Error : Account/{Account.Id}");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
 
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View($"Error : Account/{Account.Id}");
+                return View("Error");
             }
         }
 
@@ -113,22 +101,16 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View($"Error : Account/{Account.Id}");
-                }
-
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
-                var account = JsonConvert.DeserializeObject<List<Account>>(jsonString).FirstOrDefault(x => x.Id == Account.Id);
+                var account = JsonConvert.DeserializeObject<Account>(jsonString);
 
                 return View(account);
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e.ToString());
+                return View("Error");
             }
-
-            return View($"Error in Account/{Account.Id}");
         }
 
         // GET: Account/Delete/5
@@ -149,18 +131,14 @@ namespace SecureXWebApp.Controllers
                 try
                 {
                     var response = await HttpClient.SendAsync(request);
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        return View($"Error: Account/{account.Id}");
-                    }
+                    if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
 
-                    return View("Account was deleted.");
+                    return View("Index");
                 }
-                catch (Exception e)
+                catch
                 {
-                    Console.WriteLine(e.ToString());
+                    return View("Error");
                 }
-                return View($"Error in Account/{account.Id}");
             }
         }
     }

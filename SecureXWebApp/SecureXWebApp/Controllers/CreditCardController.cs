@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,19 +26,15 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View("Error : CreditCard/Index");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 List<CreditCard> users = JsonConvert.DeserializeObject<List<CreditCard>>(jsonString);
                 return View(users);
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e.ToString());
+                return View("Error");
             }
-            return View("Error : CreditCard/Index");
         }
         
 
@@ -50,19 +47,15 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View($"Error : CreditCard/{CreditCard.Id}");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
-                CreditCard creditcard = JsonConvert.DeserializeObject<List<CreditCard>>(jsonString).FirstOrDefault(x => x.Id == CreditCard.Id);
+                CreditCard creditcard = JsonConvert.DeserializeObject<CreditCard>(jsonString);
                 return View(creditcard);
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e.ToString());
+                return View("Error");
             }
-            return View($"Error : CreditCard/{CreditCard.Id}");
         }
 
         // GET: CreditCard/Create
@@ -85,19 +78,14 @@ namespace SecureXWebApp.Controllers
             {
                 var uri = $"CreditCard/{CreditCard.Id}";
                 var request = CreateRequestToService(HttpMethod.Post, uri, CreditCard);
-
                 var response = await HttpClient.SendAsync(request);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View($"Error : CreditCard/{CreditCard.Id}");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
 
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View($"Error : CreditCard/{CreditCard.Id}");
+                return View("Error");
             }
         }
 
@@ -119,18 +107,13 @@ namespace SecureXWebApp.Controllers
                 try
                 {
                     var response = await HttpClient.SendAsync(request);
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        return View($"Error: CreditCard/{CreditCard.Id}");
-                    }
-
-                    return View("Credit card was deleted.");
+                    if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                    return View("Index");
                 }
-                catch (Exception e)
+                catch
                 {
-                    Console.WriteLine(e.ToString());
+                    return View("Error");
                 }
-                return View($"Error in CreditCard/{CreditCard.Id}");
             }
         }
     }
