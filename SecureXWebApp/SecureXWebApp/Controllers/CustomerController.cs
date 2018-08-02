@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,19 +27,15 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View("Error : Customer/Index");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 List<Customer> customers = JsonConvert.DeserializeObject<List<Customer>>(jsonString);
                 return View(customers);
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e.ToString());
+                return View("Error");
             }
-            return View("Error : Customer/Index");
         }
 
         // GET: Customer/Details/5
@@ -50,19 +47,15 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View($"Error : Customer/{Customer.Id}");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
-                Customer customer = JsonConvert.DeserializeObject<List<Customer>>(jsonString).FirstOrDefault(x => x.Id == Customer.Id);
+                Customer customer = JsonConvert.DeserializeObject<Customer>(jsonString);
                 return View(customer);
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e.ToString());
+                return View("Error");
             }
-            return View($"Error : Customer/{Customer.Id}");
         }
 
         // GET: Customer/Create
@@ -85,19 +78,14 @@ namespace SecureXWebApp.Controllers
             {
                 var uri = $"Customer/{Customer.Id}";
                 var request = CreateRequestToService(HttpMethod.Post, uri, Customer);
-
                 var response = await HttpClient.SendAsync(request);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View($"Error : Customer/{Customer.Id}");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
 
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View($"Error : Customer/{Customer.Id}");
+                return View("Error");
             }
         }
 
@@ -117,22 +105,16 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View($"Error : Customer/{Customer.Id}");
-                }
-
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
-                var customer = JsonConvert.DeserializeObject<List<Customer>>(jsonString).FirstOrDefault(x => x.Id == Customer.Id);
+                var customer = JsonConvert.DeserializeObject<Customer>(jsonString);
 
                 return View(customer);
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e.ToString());
+                return View("Error");
             }
-
-            return View($"Error in Customer/{Customer.Id}");
         }
 
         // GET: Customer/Delete/5
@@ -153,18 +135,14 @@ namespace SecureXWebApp.Controllers
                 try
                 {
                     var response = await HttpClient.SendAsync(request);
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        return View($"Error: Customer/{Customer.Id}");
-                    }
+                    if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
 
-                    return View("Customer was deleted.");
+                    return View("Index");
                 }
-                catch (Exception e)
+                catch
                 {
-                    Console.WriteLine(e.ToString());
+                    return View("Error");
                 }
-                return View($"Error in Customer/{Customer.Id}");
             }
         }
     }

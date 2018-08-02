@@ -25,19 +25,15 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View("Error : User/Index");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 List<User> users = JsonConvert.DeserializeObject<List<User>>(jsonString);
                 return View(users);
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e.ToString());
+                return View("Error");
             }
-            return View("Error : User/Index");
         }
 
         // GET: User/Details/5
@@ -49,19 +45,15 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View($"Error : User/{User.Id}");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
-                User user = JsonConvert.DeserializeObject<List<User>>(jsonString).FirstOrDefault(x => x.Id == User.Id);
+                User user = JsonConvert.DeserializeObject<User>(jsonString);
                 return View(user);
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e.ToString());
+                return View("Error");
             }
-            return View($"Error : User/{User.Id}");
         }
 
         // GET: User/Create
@@ -85,13 +77,8 @@ namespace SecureXWebApp.Controllers
             {
                 var uri = "User";
                 var request = CreateRequestToService(HttpMethod.Post, uri, User);
-
                 var response = await HttpClient.SendAsync(request);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View("Error");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -118,22 +105,17 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View($"Error : User/{User.Id}");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
 
                 string jsonString = await response.Content.ReadAsStringAsync();
-                var user = JsonConvert.DeserializeObject<List<User>>(jsonString).FirstOrDefault(x => x.Id == User.Id);
+                var user = JsonConvert.DeserializeObject<User>(jsonString);
 
                 return View(user);
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e.ToString());
+                return View("Error");
             }
-
-            return View($"Error in User/{User.Id}");
         }
 
         // GET: User/Delete/5
@@ -154,18 +136,14 @@ namespace SecureXWebApp.Controllers
                 try
                 {
                     var response = await HttpClient.SendAsync(request);
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        return View($"Error: User/{User.Id}");
-                    }
-                   
-                    return View("User was deleted.");
+                    if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+
+                    return View("Index");
                 }
-                catch (Exception e)
+                catch
                 {
-                    Console.WriteLine(e.ToString());
+                    return View("Error");
                 }
-                return View($"Error in User/{User.Id}");
             }
         }
     }

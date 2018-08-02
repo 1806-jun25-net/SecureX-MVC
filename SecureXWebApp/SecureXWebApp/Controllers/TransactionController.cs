@@ -25,19 +25,15 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View("Error : Transaction/Index");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 List<Transaction> transaction = JsonConvert.DeserializeObject<List<Transaction>>(jsonString);
                 return View(transaction);
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e.ToString());
+                return View("Error");
             }
-            return View("Error : Transaction/Index");
         }
 
         // GET: Transaction/Details/5
@@ -49,19 +45,15 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View($"Error : Transaction/{Transaction.Id}");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
-                Transaction transaction = JsonConvert.DeserializeObject<List<Transaction>>(jsonString).FirstOrDefault(x => x.Id == Transaction.Id);
+                Transaction transaction = JsonConvert.DeserializeObject<Transaction>(jsonString);
                 return View(transaction);
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e.ToString());
+                return View("Error");
             }
-            return View($"Error : Transaction/{Transaction.Id}");
         }
 
         // GET: Transaction/Create
@@ -84,20 +76,14 @@ namespace SecureXWebApp.Controllers
             {
                 var uri = $"Transaction/{Transaction.Id}";
                 var request = CreateRequestToService(HttpMethod.Post, uri, Transaction);
-
                 var response = await HttpClient.SendAsync(request);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    return View($"Error : Transaction/{Transaction.Id}");
-                }
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
 
                 return RedirectToAction(nameof(Index));
             }
             catch
-
             {
-                return View($"Error : Transaction/{Transaction.Id}");
+                return View("Error");
             }
         }
     }
