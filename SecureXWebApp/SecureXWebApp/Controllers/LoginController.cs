@@ -79,6 +79,10 @@ namespace SecureXWebApp.Controllers
                 response = await HttpClient.SendAsync(request);
                 if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
 
+                // tempdata
+                TempData["UserName"] = login.UserName;
+                if (customer != null && login.UserName != "Employee") TempData["CustomerId"] = customer.Id;
+
             }
             catch
             {
@@ -160,6 +164,9 @@ namespace SecureXWebApp.Controllers
             if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
 
             PassCookiesToClient(response);
+
+            TempData["UserName"] = null;
+            TempData["CustomerId"] = null;
 
             return RedirectToAction("Index", "Home");
         }

@@ -33,18 +33,30 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li><a asp-area="" asp-controller="Login" asp-action="Register">Register</a></li>
-                    <li><a asp-area="" asp-controller="Login" asp-action="Login">Login</a></li>
-                    <li><a asp-area="" asp-controller="Login" asp-action="Logout">Logout</a></li>
-                    <li><a asp-area="" asp-controller="Bank" asp-action="Index">Bank</a></li>
+                    @if (TempData["UserName"] == null)
+                    {
+                        <li><a asp-area="" asp-controller="Login" asp-action="Register">Register</a></li>
+                        <li><a asp-area="" asp-controller="Login" asp-action="Login">Login</a></li>
+                    }
                     @if (TempData["UserName"] != null)
                     {
-                        <li>@TempData["UserName"]</li>
+                        <li><a asp-area="" asp-controller="Account" asp-action="Index">Accounts</a></li>
+                        <li><a asp-area="" asp-controller="Login" asp-action="Logout">Logout</a></li>
                     }
-                    @if (TempData["CustomerId"] != null)
-                    {
-                        <li>@TempData["CustomerId"]</li>
-                    }                   
+                    @*
+                        @if (TempData["UserName"] != null)
+                        {
+                            var userName = TempData.Peek("UserName");
+                            TempData.Keep("UserName");
+                            <li><a asp-area="">(temp)@userName</a></li>
+                        }
+                        @if (TempData["CustomerId"] != null)
+                        {
+                            var customerId = TempData.Peek("CustomerId");
+                            TempData.Keep("CustomerId");
+                            <li><a asp-area="">(temp)@customerId</a></li>
+                        }
+                    *@
                 </ul>
             </div>
         </div>

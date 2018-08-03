@@ -29,7 +29,14 @@ namespace SecureXWebApp.Controllers
                 if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 List<Account> accounts = JsonConvert.DeserializeObject<List<Account>>(jsonString);
-                return View(accounts);
+                if (TempData["CustomerId"] != null)
+                {
+                    var sCustomerId = (int)TempData.Peek("CustomerId");
+                    TempData.Keep("CustomerId");
+                    accounts = accounts.FindAll(x => x.CustomerId == sCustomerId);
+                }
+                if (accounts != null) return View(accounts);
+                else return View();
             }
             catch
             {
