@@ -41,22 +41,23 @@
                     @if (TempData["UserName"] != null)
                     {
                         <li><a asp-area="" asp-controller="Account" asp-action="Index">Accounts</a></li>
+                        <li><a asp-area="" asp-controller="CreditCard" asp-action="Index">Credit</a></li>
                         <li><a asp-area="" asp-controller="Login" asp-action="Logout">Logout</a></li>
                     }
-                    
-                        @if (TempData["UserName"] != null)
-                        {
-                            var userName = TempData.Peek("UserName");
-                            TempData.Keep("UserName");
-                            //<li><a asp-area="">(temp)@userName</a></li>
-                        }
-                        @if (TempData["CustomerId"] != null)
-                        {
-                            var customerId = TempData.Peek("CustomerId");
-                            TempData.Keep("CustomerId");
-                            //<li><a asp-area="">(temp)@customerId</a></li>
-                        }
-                    
+
+                    @if (TempData["UserName"] != null)
+                    {
+                        var userName = TempData.Peek("UserName");
+                        TempData.Keep("UserName");
+                        //<li><a asp-area="">(temp)@userName</a></li>
+                    }
+                    @if (TempData["CustomerId"] != null)
+                    {
+                        var customerId = TempData.Peek("CustomerId");
+                        TempData.Keep("CustomerId");
+                        //<li><a asp-area="">(temp)@customerId</a></li>
+                    }
+
                 </ul>
             </div>
         </div>
