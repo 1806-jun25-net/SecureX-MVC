@@ -37,14 +37,14 @@
                     <li><a asp-area="" asp-controller="Login" asp-action="Login">Login</a></li>
                     <li><a asp-area="" asp-controller="Login" asp-action="Logout">Logout</a></li>
                     <li><a asp-area="" asp-controller="Bank" asp-action="Index">Bank</a></li>
-                    @if (TempData["UserInfo"] != null)
+                    @if (TempData["UserName"] != null)
                     {
-                        var userInfo = (UserInfo)TempData["UserInfo"];
-                        var username = userInfo.UserName;
-                        var customerId = userInfo.CustomerId.ToString();
-                        <li>@username</li>
-                        <li>@customerId</li>
+                        <li>@TempData["UserName"]</li>
                     }
+                    @if (TempData["CustomerId"] != null)
+                    {
+                        <li>@TempData["CustomerId"]</li>
+                    }                   
                 </ul>
             </div>
         </div>

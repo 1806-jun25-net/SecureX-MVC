@@ -129,13 +129,10 @@ namespace SecureXWebApp.Controllers
             if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
             string jsonString = await response.Content.ReadAsStringAsync();
             List<Customer> customers = JsonConvert.DeserializeObject<List<Customer>>(jsonString);
-            var customerId = customers.First(x => x.UserName == login.UserName).Id;
+            var customer = customers.FirstOrDefault(x => x.UserName == login.UserName);
 
-            TempData["UserInfo"] = new UserInfo
-            {
-                UserName = login.UserName,
-                CustomerId = customerId
-            };
+            TempData["UserName"] = login.UserName;
+            if(customer != null && login.UserName != "Employee")TempData["CustomerId"] = customer.Id;
 
             return RedirectToAction("Index", "Home");
         }
