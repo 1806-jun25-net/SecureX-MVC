@@ -113,6 +113,7 @@ namespace SecureXWebApp.Controllers
                     if(account.Status == "Active") accountIds.Add(account.Id);
                 }
                 transactionVM.AccountIds = accountIds;
+                if (transactionVM.AccountIds == null) return View("Error", new ErrorViewModel("No active accounts available."));
                 return View(transactionVM);
             }
             catch
