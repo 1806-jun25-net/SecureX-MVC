@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using SecureXWebApp.Models;
 
@@ -88,29 +89,58 @@ namespace SecureXWebApp.Controllers
         }
 
         // GET: Transaction/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
-            return View();
+            var transactionVM = new TransactionViewModel();
+            var uri = "Account";
+            var request = CreateRequestToService(HttpMethod.Get, uri);
+            try
+            {
+                var response = await HttpClient.SendAsync(request);
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                string jsonString = await response.Content.ReadAsStringAsync();
+                List<Account> accounts = JsonConvert.DeserializeObject<List<Account>>(jsonString);                
+                if (TempData["CustomerId"] != null)
+                {
+                    var sCustomerId = (int)TempData.Peek("CustomerId");
+                    TempData.Keep("CustomerId");
+                    accounts = accounts.FindAll(x => x.CustomerId == sCustomerId);
+                }
+                // create list of account ids
+                List<int> accountIds = new List<int>();
+                foreach (var account in accounts)
+                {
+                    accountIds.Add(account.Id);
+                }
+                transactionVM.AccountIds = accountIds;
+                return View(transactionVM);
+            }
+            catch
+            {
+                return View("Error");
+            }
         }
 
         // POST: Transaction/Create
         // ELA async
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Transaction Transaction)
+        public async Task<IActionResult> Create(TransactionViewModel transactionVM)
         {
             if (!ModelState.IsValid)
             {
-                return View(Transaction);
+                return View(transactionVM);
             }
             try
             {
-                if(Transaction.Type == "Withdrawl")
+                if(transactionVM.Type == "Withdrawl")
                 {
-                    Transaction.TransactionAmount *= -1;
+                    transactionVM.Transaction.TransactionAmount *= -1;
                 }
-                var uri = $"Transaction/{Transaction.Id}";
-                var request = CreateRequestToService(HttpMethod.Post, uri, Transaction);
+                transactionVM.Transaction.AccountId = transactionVM.SelectedId;
+                transactionVM.Transaction.DateOfTransaction = DateTime.Now;
+                var uri = $"Transaction";
+                var request = CreateRequestToService(HttpMethod.Post, uri, transactionVM.Transaction);
                 var response = await HttpClient.SendAsync(request);
                 if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
 
