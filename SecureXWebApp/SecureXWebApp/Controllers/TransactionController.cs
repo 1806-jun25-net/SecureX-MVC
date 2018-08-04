@@ -110,7 +110,7 @@ namespace SecureXWebApp.Controllers
                 List<int> accountIds = new List<int>();
                 foreach (var account in accounts)
                 {
-                    accountIds.Add(account.Id);
+                    if(account.Status == "Active") accountIds.Add(account.Id);
                 }
                 transactionVM.AccountIds = accountIds;
                 return View(transactionVM);
