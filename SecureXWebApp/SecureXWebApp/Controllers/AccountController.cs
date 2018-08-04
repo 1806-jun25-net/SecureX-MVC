@@ -66,8 +66,6 @@ namespace SecureXWebApp.Controllers
 
         // GET: Account/Create
         //ELA async
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Create()
         {
             return View();
