@@ -25,6 +25,6 @@ namespace SecureXWebApp.Models
         public int CustomerId { get; set; }
 
         [Required]
-        public string Status { get; set; }
+        public string Status { get; set; } = "Pending";
     }
 }
