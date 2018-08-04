@@ -56,6 +56,7 @@ namespace SecureXWebApp.Controllers
 
                 // post customer
                 var customer = register.Customer;
+                customer.UserName = register.Login.UserName;
                 uri = "Customer";
                 request = CreateRequestToService(HttpMethod.Post, uri, customer);
                 response = await HttpClient.SendAsync(request);
@@ -67,7 +68,7 @@ namespace SecureXWebApp.Controllers
                 if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 List<Customer> customers = JsonConvert.DeserializeObject<List<Customer>>(jsonString);
-                var customerId = customers.Last().Id;
+                var customerId = customers.First(x => x.UserName == login.UserName).Id;
 
                 // post user
                 var user = register.User;
@@ -77,6 +78,10 @@ namespace SecureXWebApp.Controllers
                 request = CreateRequestToService(HttpMethod.Post, uri, user);
                 response = await HttpClient.SendAsync(request);
                 if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+
+                // tempdata
+                TempData["UserName"] = login.UserName;
+                if (customer != null && login.UserName != "Employee") TempData["CustomerId"] = customer.Id;
 
             }
             catch
@@ -121,6 +126,18 @@ namespace SecureXWebApp.Controllers
 
             PassCookiesToClient(response);
 
+            // get customer id
+            var uri = "Customer";
+            request = CreateRequestToService(HttpMethod.Get, uri);
+            response = await HttpClient.SendAsync(request);
+            if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+            string jsonString = await response.Content.ReadAsStringAsync();
+            List<Customer> customers = JsonConvert.DeserializeObject<List<Customer>>(jsonString);
+            var customer = customers.FirstOrDefault(x => x.UserName == login.UserName);
+
+            TempData["UserName"] = login.UserName;
+            if(customer != null && login.UserName != "Employee")TempData["CustomerId"] = customer.Id;
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -147,6 +164,9 @@ namespace SecureXWebApp.Controllers
             if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
 
             PassCookiesToClient(response);
+
+            TempData["UserName"] = null;
+            TempData["CustomerId"] = null;
 
             return RedirectToAction("Index", "Home");
         }

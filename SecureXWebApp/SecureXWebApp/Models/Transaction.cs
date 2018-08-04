@@ -21,13 +21,13 @@ namespace SecureXWebApp.Models
         public string Recipient { get; set; }
 
         [Required]
-        [Display(Name = "Date of Transaction")]
+        [Display(Name = "Date")]
         [DataType(DataType.DateTime)]
         public DateTime DateOfTransaction { get; set; }
 
         [Required]
         [Range(1.00, 100000000.00)]
-        [Display(Name = "Transaction Amount")]
+        [Display(Name = "Amount")]
         public decimal TransactionAmount { get; set; }
     }
 }

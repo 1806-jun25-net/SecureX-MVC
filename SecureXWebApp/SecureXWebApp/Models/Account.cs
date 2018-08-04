@@ -19,5 +19,9 @@ namespace SecureXWebApp.Models
         [Required]
         [Range(0.00, 1000000000.00)]
         public decimal Funds { get; set; }
+
+        [Required]
+        [Display(Name = "Customer ID")]
+        public int CustomerId { get; set; }
     }
 }

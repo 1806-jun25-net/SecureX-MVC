@@ -23,5 +23,9 @@ namespace SecureXWebApp.Models
         [Required]
         [StringLength(50, MinimumLength = 2)]
         public string City { get; set; }
+
+        [Required]
+        [StringLength(50, MinimumLength = 2)]
+        public string UserName { get; set; }
     }
 }

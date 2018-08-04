@@ -27,8 +27,39 @@ namespace SecureXWebApp.Controllers
                 var response = await HttpClient.SendAsync(request);
                 if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
-                List<Transaction> transaction = JsonConvert.DeserializeObject<List<Transaction>>(jsonString);
-                return View(transaction);
+                List<Transaction> transactions = JsonConvert.DeserializeObject<List<Transaction>>(jsonString);
+                List<Transaction> sTransactions = new List<Transaction>();
+
+                uri = "Account";
+                request = CreateRequestToService(HttpMethod.Get, uri);
+                try
+                {
+                    response = await HttpClient.SendAsync(request);
+                    if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                    jsonString = await response.Content.ReadAsStringAsync();
+                    List<Account> accounts = JsonConvert.DeserializeObject<List<Account>>(jsonString);
+                    if (TempData["CustomerId"] != null)
+                    {
+                        var sCustomerId = (int)TempData.Peek("CustomerId");
+                        TempData.Keep("CustomerId");
+                        accounts = accounts.FindAll(x => x.CustomerId == sCustomerId);
+
+                        if (accounts != null)
+                        {
+                            foreach (var account in accounts)
+                            {
+                                sTransactions.AddRange(transactions.FindAll(x => x.AccountId == account.Id));
+                            }
+
+                            if (sTransactions != null) return View(sTransactions);
+                        }
+                    }
+                    return View();
+                }
+                catch
+                {
+                    return View("Error");
+                }
             }
             catch
             {

@@ -28,8 +28,15 @@ namespace SecureXWebApp.Controllers
                 var response = await HttpClient.SendAsync(request);
                 if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
-                List<CreditCard> users = JsonConvert.DeserializeObject<List<CreditCard>>(jsonString);
-                return View(users);
+                List<CreditCard> creditcards = JsonConvert.DeserializeObject<List<CreditCard>>(jsonString);
+                if (TempData["CustomerId"] != null)
+                {
+                    var sCustomerId = (int)TempData.Peek("CustomerId");
+                    TempData.Keep("CustomerId");
+                    creditcards = creditcards.FindAll(x => x.CustomerId == sCustomerId);
+                }
+                if (creditcards != null) return View(creditcards);
+                else return View();
             }
             catch
             {
