@@ -15,7 +15,9 @@
             <div class="form-group">
 
                 @*Checkbox here for choosing savings or checking account*@
+                <label asp-for="AccountType" class="control-label">Savings</label>
                 @Html.RadioButtonFor(m => m.AccountType, "Savings")
+                <label asp-for="AccountType" class="control-label">Checking</label>
                 @Html.RadioButtonFor(m => m.AccountType, "Checking")
                 <span asp-validation-for="AccountType" class="text-danger"></span>
             </div>
