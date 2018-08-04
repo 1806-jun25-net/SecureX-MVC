@@ -83,6 +83,7 @@ namespace SecureXWebApp.Controllers
             }
             try
             {
+                Account.Status = "Pending";
                 var sCustomerId = (int)TempData.Peek("CustomerId");
                 TempData.Keep("CustomerId");
                 Account.CustomerId = sCustomerId;
