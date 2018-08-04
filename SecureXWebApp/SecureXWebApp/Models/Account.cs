@@ -23,5 +23,8 @@ namespace SecureXWebApp.Models
         [Required]
         [Display(Name = "Customer ID")]
         public int CustomerId { get; set; }
+
+        [Required]
+        public string Status { get; set; }
     }
 }

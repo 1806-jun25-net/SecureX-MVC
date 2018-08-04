@@ -22,7 +22,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Funds)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -37,6 +39,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Funds)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
                 </td>
 
             </tr>
