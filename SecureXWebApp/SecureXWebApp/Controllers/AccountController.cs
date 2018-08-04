@@ -66,8 +66,6 @@ namespace SecureXWebApp.Controllers
 
         // GET: Account/Create
         //ELA async
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Create()
         {
             return View();
@@ -85,8 +83,11 @@ namespace SecureXWebApp.Controllers
             }
             try
             {
-                var uri = $"Account/{Account.Id}";
-                var request = CreateRequestToService(HttpMethod.Post, uri, User);
+                var sCustomerId = (int)TempData.Peek("CustomerId");
+                TempData.Keep("CustomerId");
+                Account.CustomerId = sCustomerId;
+                var uri = $"Account";
+                var request = CreateRequestToService(HttpMethod.Post, uri, Account);
                 var response = await HttpClient.SendAsync(request);
                 if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
 

@@ -29,5 +29,9 @@ namespace SecureXWebApp.Models
         [Range(1.00, 100000000.00)]
         [Display(Name = "Amount")]
         public decimal TransactionAmount { get; set; }
+
+        [Required]
+        [Display(Name ="Type")]
+        public string Type { get; set; }
     }
 }

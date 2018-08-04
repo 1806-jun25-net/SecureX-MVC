@@ -105,6 +105,10 @@ namespace SecureXWebApp.Controllers
             }
             try
             {
+                if(Transaction.Type == "Withdrawl")
+                {
+                    Transaction.TransactionAmount *= -1;
+                }
                 var uri = $"Transaction/{Transaction.Id}";
                 var request = CreateRequestToService(HttpMethod.Post, uri, Transaction);
                 var response = await HttpClient.SendAsync(request);
