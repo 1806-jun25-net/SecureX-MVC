@@ -31,7 +31,7 @@ namespace SecureXWebApp.Controllers
             }
             catch
             {
-                return View("Error");
+                return View("Error", new ErrorViewModel());
             }
         }
 
@@ -51,7 +51,7 @@ namespace SecureXWebApp.Controllers
             }
             catch
             {
-                return View("Error");
+                return View("Error", new ErrorViewModel());
             }
         }
 

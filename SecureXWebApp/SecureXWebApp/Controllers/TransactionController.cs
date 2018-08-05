@@ -59,12 +59,12 @@ namespace SecureXWebApp.Controllers
                 }
                 catch
                 {
-                    return View("Error");
+                    return View("Error", new ErrorViewModel());
                 }
             }
             catch
             {
-                return View("Error");
+                return View("Error", new ErrorViewModel());
             }
         }
 
@@ -84,7 +84,7 @@ namespace SecureXWebApp.Controllers
             }
             catch
             {
-                return View("Error");
+                return View("Error", new ErrorViewModel());
             }
         }
 
@@ -113,12 +113,12 @@ namespace SecureXWebApp.Controllers
                     if(account.Status == "Active") accountIds.Add(account.Id);
                 }
                 transactionVM.AccountIds = accountIds;
-                if (transactionVM.AccountIds.Count() == 0) return View("Error", new ErrorViewModel("No active accounts available."));
+                if (transactionVM.AccountIds.Count() == 0) return View("Error", new ErrorViewModel("No active accounts available to make a transaction."));
                 return View(transactionVM);
             }
             catch
             {
-                return View("Error");
+                return View("Error", new ErrorViewModel());
             }
         }
 
@@ -149,7 +149,7 @@ namespace SecureXWebApp.Controllers
             }
             catch
             {
-                return View("Error");
+                return View("Error", new ErrorViewModel());
             }
         }
     }

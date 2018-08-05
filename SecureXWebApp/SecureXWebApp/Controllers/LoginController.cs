@@ -86,7 +86,7 @@ namespace SecureXWebApp.Controllers
             }
             catch
             {
-                return View("Error");
+                return View("Error", new ErrorViewModel());
             }
 
             return RedirectToAction("Index", "Home");
@@ -111,7 +111,7 @@ namespace SecureXWebApp.Controllers
             }
             catch (AggregateException)
             {
-                return View("Error");
+                return View("Error", new ErrorViewModel());
             }
 
             if (!response.IsSuccessStatusCode)
@@ -146,7 +146,7 @@ namespace SecureXWebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("Error");
+                return View("Error", new ErrorViewModel());
             }
 
             HttpRequestMessage request = CreateRequestToService(HttpMethod.Post, "Login/Logout");
@@ -158,7 +158,7 @@ namespace SecureXWebApp.Controllers
             }
             catch (AggregateException)
             {
-                return View("Error");
+                return View("Error", new ErrorViewModel());
             }
 
             if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
