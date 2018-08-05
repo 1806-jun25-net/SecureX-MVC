@@ -29,7 +29,7 @@ namespace SecureXWebApp.Controllers
                 if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 List<Transaction> transactions = JsonConvert.DeserializeObject<List<Transaction>>(jsonString);
-                List<Transaction> sTransactions = new List<Transaction>();
+                List<Transaction> customerTransactions = new List<Transaction>();
 
                 uri = "Account";
                 request = CreateRequestToService(HttpMethod.Get, uri);
@@ -41,18 +41,18 @@ namespace SecureXWebApp.Controllers
                     List<Account> accounts = JsonConvert.DeserializeObject<List<Account>>(jsonString);
                     if (TempData["CustomerId"] != null)
                     {
-                        var sCustomerId = (int)TempData.Peek("CustomerId");
+                        var currentCustomerId = (int)TempData.Peek("CustomerId");
                         TempData.Keep("CustomerId");
-                        accounts = accounts.FindAll(x => x.CustomerId == sCustomerId);
+                        accounts = accounts.FindAll(x => x.CustomerId == currentCustomerId);
 
                         if (accounts != null)
                         {
                             foreach (var account in accounts)
                             {
-                                sTransactions.AddRange(transactions.FindAll(x => x.AccountId == account.Id));
+                                customerTransactions.AddRange(transactions.FindAll(x => x.AccountId == account.Id));
                             }
 
-                            if (sTransactions != null) return View(sTransactions);
+                            if (customerTransactions != null) return View(customerTransactions);
                         }
                     }
                     return View();

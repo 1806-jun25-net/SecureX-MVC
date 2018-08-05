@@ -84,9 +84,9 @@ namespace SecureXWebApp.Controllers
             try
             {
                 Account.Status = "Pending";
-                var sCustomerId = (int)TempData.Peek("CustomerId");
+                var currentCustomerId = (int)TempData.Peek("CustomerId");
                 TempData.Keep("CustomerId");
-                Account.CustomerId = sCustomerId;
+                Account.CustomerId = currentCustomerId;
                 var uri = $"Account";
                 var request = CreateRequestToService(HttpMethod.Post, uri, Account);
                 var response = await HttpClient.SendAsync(request);
