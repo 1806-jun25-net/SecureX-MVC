@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<SecureXWebApp.Models.Account>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "My Accounts";
 }
 
-<h2>Customer Account @*put an ID here? i.e #00000+@Account.ID*@</h2>
+<h2>My Accounts</h2>
 
 <p>
-    <a asp-action="Create"> Create New Account</a>
+    <a asp-action="Create"> Open New Account</a>
 </p>
 
-<table class="table">
+<table class="table table-bordered table-hover">
     <thead>
         <tr>
             <th>
@@ -32,18 +32,17 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Id)
+                    <text>XXXXX000</text>@Html.DisplayFor(modelItem => item.Id)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.AccountType)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Funds)
+                    <text>$</text>@Html.DisplayFor(modelItem => item.Funds)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Status)
                 </td>
-
             </tr>
         }
     </tbody>

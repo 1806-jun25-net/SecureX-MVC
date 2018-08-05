@@ -9,7 +9,7 @@ namespace SecureXWebApp.Models
     public class Account
     {
         [Required]
-        [Display(Name = "Account ID")]
+        [Display(Name = "Account Number")]
         public int Id { get; set; }
 
         [Required]
