@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace SecureXWebApp.Models
 {
-    public class UserInfo
+    public class ProfileViewModel
     {
-        public string UserName { get; set; }
-        public int CustomerId { get; set; }
+        public User User { get; set; }
+        public Customer Customer { get; set; }
     }
 }

@@ -1,0 +1,55 @@
+﻿@model SecureXWebApp.Models.ProfileViewModel
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<h2>Profile</h2>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.User.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.UserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User.CustomerId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.CustomerId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User.FirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.LastName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Customer.Address)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Customer.Address)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Customer.City)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Customer.City)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Customer.PhoneNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Customer.PhoneNumber)
+        </dd>
+    </dl>
+</div>
+

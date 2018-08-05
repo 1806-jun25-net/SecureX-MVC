@@ -17,7 +17,7 @@ namespace SecureXWebApp.Models
         public string Address { get; set; }
 
         [Required]
-        [Display(Name = "Phone Number")]
+        [Display(Name = "Phone")]
         public long PhoneNumber { get; set; }
 
         [Required]

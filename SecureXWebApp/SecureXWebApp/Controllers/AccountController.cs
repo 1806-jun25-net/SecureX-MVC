@@ -31,9 +31,9 @@ namespace SecureXWebApp.Controllers
                 List<Account> accounts = JsonConvert.DeserializeObject<List<Account>>(jsonString);
                 if (TempData["CustomerId"] != null)
                 {
-                    var sCustomerId = (int)TempData.Peek("CustomerId");
+                    var currentCustomerId = (int)TempData.Peek("CustomerId");
                     TempData.Keep("CustomerId");
-                    accounts = accounts.FindAll(x => x.CustomerId == sCustomerId);
+                    accounts = accounts.FindAll(x => x.CustomerId == currentCustomerId);
                 }
                 if (accounts != null) return View(accounts);
                 else return View();

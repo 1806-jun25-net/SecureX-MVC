@@ -36,6 +36,52 @@ namespace SecureXWebApp.Controllers
             }
         }
 
+        // GET: User/Customer Profile
+        public async Task<IActionResult> Profile()
+        {
+            try
+            {
+                var currentUserName = (string)TempData.Peek("UserName");
+                TempData.Keep("UserName");                                
+                var uri = "User";
+                var request = CreateRequestToService(HttpMethod.Get, uri);
+                var response = await HttpClient.SendAsync(request);
+                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                string jsonString = await response.Content.ReadAsStringAsync();
+                List<User> users = JsonConvert.DeserializeObject<List<User>>(jsonString);                
+                var user = users.First(x => x.UserName == currentUserName);           
+                                
+                try
+                {
+                    var currentCustomerId = (int)TempData.Peek("CustomerId");
+                    TempData.Keep("CustomerId");
+                    uri = "Customer";
+                    request = CreateRequestToService(HttpMethod.Get, uri);
+                    response = await HttpClient.SendAsync(request);
+                    if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                    jsonString = await response.Content.ReadAsStringAsync();
+                    List<Customer> customers = JsonConvert.DeserializeObject<List<Customer>>(jsonString);
+                    var customer = customers.First(x => x.Id == currentCustomerId);
+
+                    var profileVM = new ProfileViewModel
+                    {
+                        User = user,
+                        Customer = customer
+                    };
+
+                    return View(profileVM);
+                }
+                catch
+                {
+                    return View("Error", new ErrorViewModel("Failed to load cutomer info."));
+                }
+            }
+            catch
+            {
+                return View("Error", new ErrorViewModel("Failed to load user info."));
+            }
+        }
+
         // GET: User/Details/5
         //ELA async
         public async Task<IActionResult> Details(User User)
