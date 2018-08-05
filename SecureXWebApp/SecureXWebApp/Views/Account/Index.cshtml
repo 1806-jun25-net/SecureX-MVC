@@ -34,8 +34,12 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    <text>XXXXX000</text>@Html.DisplayFor(modelItem => item.Id)
+                <td>                    
+                    @if (item.Id < 10) {<text>XXXXX000</text>@Html.DisplayFor(modelItem => item.Id)}
+                    else if (item.Id < 100) {<text>XXXXX00</text>@Html.DisplayFor(modelItem => item.Id)}
+                    else if (item.Id < 1000) {<text>XXXXX0</text>@Html.DisplayFor(modelItem => item.Id)}
+                    else if (item.Id < 10000) {<text>XXXXX</text>@Html.DisplayFor(modelItem => item.Id)}
+                    else if (item.Id < 100000) {<text>XXXXX</text>@item.Id.ToString().Substring(Math.Max(0, item.Id.ToString().Length - 4))}
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.AccountType)

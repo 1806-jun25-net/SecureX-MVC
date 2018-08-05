@@ -11,10 +11,20 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
+            @Html.DisplayNameFor(model => model.CustomerId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CustomerId)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.Id)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Id)
+            @if (Model.Id < 10) {<text>XXXXX000</text>@Html.DisplayFor(model => model.Id)}
+            else if (Model.Id < 100) {<text>XXXXX00</text>@Html.DisplayFor(model => model.Id)}
+            else if (Model.Id < 1000) {<text>XXXXX0</text>@Html.DisplayFor(model => model.Id)}
+            else if (Model.Id < 10000) {<text>XXXXX</text>@Html.DisplayFor(model => model.Id)}
+            else if (Model.Id < 100000) {<text>XXXXX</text>@Model.Id.ToString().Substring(Math.Max(0, Model.Id.ToString().Length - 4))}
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.AccountType)
@@ -26,7 +36,13 @@
             @Html.DisplayNameFor(model => model.Funds)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Funds)
+            $@Html.DisplayFor(model => model.Funds)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Status)
         </dd>
     </dl>
 </div>
@@ -34,5 +50,5 @@
 <li><a asp-area="" asp-controller="Transaction" asp-action="Index">Transactions</a></li>
 
 <div>
-    <a asp-action="Index">Back to account</a>
+    <a asp-action="Index">Back to My Accounts</a>
 </div>
