@@ -14,21 +14,29 @@ namespace SecureXWebApp.Models
 
         [Required]
         [Range(0.00, 2000.00)]
-        [Display(Name = "Credit Limit")]
+        [Display(Name = "Available Credit")]
         public decimal CreditLimit { get; set; }
 
         [Required]
         [Range(0.00, 1000000.00)]
-        [Display(Name = "Current Debt")]
+        [Display(Name = "Balance")]
         public decimal CurrentDebt { get; set; }
 
         [Required]
         [CreditCard]
-        [Display(Name = "Credit Card Number")]
+        [Display(Name = "Card Number")]
         public long CreditCardNumber { get; set; }
 
         [Required]
         [Display(Name = "Customer ID")]
         public int CustomerId { get; set; }
+
+        [Required]
+        [Range(0.00, 2000.00)]
+        [Display(Name = "Credit Line")]
+        public decimal CreditLine { get; set; } = 2000.00m;
+
+        [Required]
+        public string Status { get; set; } = "Pending";
     }
 }

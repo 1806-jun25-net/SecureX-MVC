@@ -1,53 +1,55 @@
 ﻿@model IEnumerable<SecureXWebApp.Models.CreditCard>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "My Credit";
 }
 
-<h2>Credit Cards</h2>
+<h2>My Credit</h2>
 
 <p>
-    <a asp-action="Create"> Create New Credit Card</a>
+    <a asp-action="Create">Apply For New Credit Card</a>
 </p>
 
-<table class="table">
+<table class="table table-bordered table-hover">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreditLimit)
+                @Html.DisplayNameFor(model => model.CreditCardNumber)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CurrentDebt)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreditCardNumber)
+                @Html.DisplayNameFor(model => model.CreditLimit)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CustomerId)
+                @Html.DisplayNameFor(model => model.CreditLine)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                Options
+            </th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Id)
+                <text>Ending(</text>@item.CreditCardNumber.ToString().Remove(0, 12)<text>)</text>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreditLimit)
+                $@Html.DisplayFor(modelItem => item.CurrentDebt)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CurrentDebt)
+                $@Html.DisplayFor(modelItem => item.CreditLimit)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreditCardNumber)
+                $@Html.DisplayFor(modelItem => item.CreditLine)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CustomerId)
+                @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
                 @Html.ActionLink("Details", "Details", new { id = item.Id })
