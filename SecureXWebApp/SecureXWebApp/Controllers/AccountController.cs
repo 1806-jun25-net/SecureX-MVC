@@ -46,17 +46,17 @@ namespace SecureXWebApp.Controllers
 
         // GET: Account/Details/5
         //ELA async
-        public async Task<IActionResult> Details(Account account)
+        public async Task<IActionResult> Details(Account Account)
         {
-            var uri = $"Account/{account.Id}";
+            var uri = $"Account/{Account.Id}";
             var request = CreateRequestToService(HttpMethod.Get, uri);
             try
             {
                 var response = await HttpClient.SendAsync(request);
                 if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
-                Account _account = JsonConvert.DeserializeObject<List<Account>>(jsonString).FirstOrDefault(x => x.Id == account.Id);
-                return View(_account);
+                Account account = JsonConvert.DeserializeObject<Account>(jsonString);
+                return View(account);
             }
             catch
             {
