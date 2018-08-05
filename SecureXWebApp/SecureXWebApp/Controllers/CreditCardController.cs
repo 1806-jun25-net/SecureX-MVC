@@ -68,7 +68,10 @@ namespace SecureXWebApp.Controllers
         // GET: CreditCard/Create
         public ActionResult Create()
         {
-            return View();
+            var card = new CreditCard();
+            card.CustomerId = (int)TempData.Peek("CustomerId");
+            TempData.Keep("CustomerId");
+            return View(card);
         }
 
         // POST: CreditCard/Create

@@ -38,5 +38,30 @@ namespace SecureXWebApp.Models
 
         [Required]
         public string Status { get; set; } = "Pending";
+
+        public CreditCard()
+        {
+            Status = "Pending";
+            CreditLine = 2000.00m;
+            CreditLimit = CreditLine;
+            CurrentDebt = 0.00m;
+            CreditCardNumber = GenerateCardNumber();
+        }
+
+        private long GenerateCardNumber()
+        {
+            long cardNumber;
+
+            Random random = new Random();
+            string cardString = "";
+            cardString += random.Next(1, 9).ToString();
+            for (int i = 0; i < 15; i++)
+            {
+                cardString += random.Next(0, 9).ToString();
+            }
+            cardNumber = Convert.ToInt64(cardString);
+
+            return cardNumber;
+        }
     }
 }

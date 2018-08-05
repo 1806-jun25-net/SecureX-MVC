@@ -11,10 +11,16 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Id)
+            @Html.DisplayNameFor(model => model.CustomerId)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Id)
+            @Html.DisplayFor(model => model.CustomerId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreditCardNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreditCardNumber)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.CreditLimit)
@@ -29,16 +35,10 @@
             @Html.DisplayFor(model => model.CurrentDebt)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.CreditCardNumber)
+            @Html.DisplayNameFor(model => model.Status)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.CreditCardNumber)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CustomerId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CustomerId)
+            @Html.DisplayFor(model => model.Status)
         </dd>
     </dl>
 </div>
@@ -46,5 +46,5 @@
 <li><a asp-area="" asp-controller="Transaction" asp-action="Index">Transactions</a></li>
 
 <div>
-    <a asp-action="Index">Back to credit cards</a>
+    <a asp-action="Index">Back to My Credit</a>
 </div>

@@ -1,45 +1,40 @@
 ﻿@model SecureXWebApp.Models.CreditCard
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Apply For New Credit Card";
 }
 
-<h2>Create</h2>
+<h2>Apply For New Credit Card</h2>
 
-<h4>Credit Card</h4>
+<h4>Request Form</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="CreditLimit" class="control-label"></label>
-                <input asp-for="CreditLimit" class="form-control" />
-                <span asp-validation-for="CreditLimit" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CurrentDebt" class="control-label"></label>
-                <input asp-for="CurrentDebt" class="form-control" />
-                <span asp-validation-for="CurrentDebt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreditCardNumber" class="control-label"></label>
-                <input asp-for="CreditCardNumber" class="form-control" />
-                <span asp-validation-for="CreditCardNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="CustomerId" class="control-label"></label>
-                <input asp-for="CustomerId" class="form-control" />
+                <input asp-for="CustomerId" class="form-control" disabled="disabled" />
                 <span asp-validation-for="CustomerId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <label asp-for="CreditCardNumber" class="control-label"></label>
+                <input asp-for="CreditCardNumber" class="form-control" disabled="disabled" />
+                <span asp-validation-for="CreditCardNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreditLine" class="control-label"></label>
+                <input asp-for="CreditLine" class="form-control" disabled="disabled" />
+                <span asp-validation-for="CreditLine" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Apply" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to credit cards</a>
+    <a asp-action="Index">Back to My Credit</a>
 </div>
 
