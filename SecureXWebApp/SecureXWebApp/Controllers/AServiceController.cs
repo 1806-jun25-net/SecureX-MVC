@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using SecureXWebApp.Models;
 
 namespace SecureXWebApp.Controllers
 {
@@ -57,8 +58,13 @@ namespace SecureXWebApp.Controllers
 
         protected IActionResult SelectErrorView(HttpResponseMessage response)
         {
-            if (response.StatusCode == HttpStatusCode.Forbidden) return View("AccessDenied");
-            return View("Error");
+            if (response.StatusCode == HttpStatusCode.BadRequest) return View("Error", new ErrorViewModel("400: Bad Request","Sorry, there was something wrong with your request."));
+            else if (response.StatusCode == HttpStatusCode.Unauthorized) return View("Error", new ErrorViewModel("401: Unauthorized", "Access denied. Try logging in first."));
+            else if (response.StatusCode == HttpStatusCode.Forbidden) return View("Error", new ErrorViewModel("403: Forbidden","Access denied. That feature is not available to you."));
+            else if (response.StatusCode == HttpStatusCode.NotFound) return View("Error", new ErrorViewModel("404: Not Found","Sorry, that page doesn't exist."));
+            else if (response.StatusCode == HttpStatusCode.InternalServerError) return View("Error", new ErrorViewModel("500: Internal Server Error", "Sorry, something went wrong with the internal server."));
+            else if (response.StatusCode == HttpStatusCode.BadGateway) return View("Error", new ErrorViewModel("502: Bad Gateway", "Sorry, something went wrong with the gateway server."));
+            return View("Error", new ErrorViewModel());
         }
     }
 }
