@@ -52,7 +52,11 @@ namespace SecureXWebApp.Controllers
                                 customerTransactions.AddRange(transactions.FindAll(x => x.AccountId == account.Id));
                             }
 
-                            if (customerTransactions != null) return View(customerTransactions);
+                            if (customerTransactions != null)
+                            {
+                                var sortedTransactions = customerTransactions.OrderByDescending(x => x.DateOfTransaction);
+                                return View(sortedTransactions);
+                            }
                         }
                     }
                     return View();
