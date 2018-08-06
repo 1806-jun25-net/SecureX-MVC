@@ -26,7 +26,7 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 List<CreditCard> creditcards = JsonConvert.DeserializeObject<List<CreditCard>>(jsonString);
                 if (TempData["CustomerId"] != null)
@@ -43,7 +43,7 @@ namespace SecureXWebApp.Controllers
                 return View("Error", new ErrorViewModel());
             }
         }
-        
+
 
         // GET: CreditCard/Details/5
         //ELA async
@@ -54,7 +54,7 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 CreditCard creditcard = JsonConvert.DeserializeObject<CreditCard>(jsonString);
                 return View(creditcard);
@@ -86,10 +86,10 @@ namespace SecureXWebApp.Controllers
             }
             try
             {
-                var uri = $"CreditCard/{CreditCard.Id}";
+                var uri = $"CreditCard";
                 var request = CreateRequestToService(HttpMethod.Post, uri, CreditCard);
                 var response = await HttpClient.SendAsync(request);
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -117,7 +117,7 @@ namespace SecureXWebApp.Controllers
                 try
                 {
                     var response = await HttpClient.SendAsync(request);
-                    if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                    if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
                     return View("Index");
                 }
                 catch

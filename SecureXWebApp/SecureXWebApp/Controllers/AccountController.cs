@@ -26,7 +26,7 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 List<Account> accounts = JsonConvert.DeserializeObject<List<Account>>(jsonString);
                 if (TempData["CustomerId"] != null)
@@ -53,7 +53,7 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 Account account = JsonConvert.DeserializeObject<Account>(jsonString);
                 return View(account);
@@ -90,7 +90,7 @@ namespace SecureXWebApp.Controllers
                 var uri = $"Account";
                 var request = CreateRequestToService(HttpMethod.Post, uri, Account);
                 var response = await HttpClient.SendAsync(request);
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -106,15 +106,57 @@ namespace SecureXWebApp.Controllers
         public async Task<IActionResult> Edit(Account Account)
         {
             var uri = $"Account/{Account.Id}";
-            var request = CreateRequestToService(HttpMethod.Put, uri);
+            var request = CreateRequestToService(HttpMethod.Put, uri, Account);
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 var account = JsonConvert.DeserializeObject<Account>(jsonString);
 
                 return View(account);
+            }
+            catch
+            {
+                return View("Error", new ErrorViewModel());
+            }
+        }
+
+        // GET: Account/Freeze/5
+        public async Task<IActionResult> Freeze(int id)
+        {
+            var uri = $"Account/{id}";
+            var request = CreateRequestToService(HttpMethod.Get, uri);
+            try
+            {
+                var response = await HttpClient.SendAsync(request);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
+                string jsonString = await response.Content.ReadAsStringAsync();
+                Account account = JsonConvert.DeserializeObject<Account>(jsonString);
+                return View(account);
+            }
+            catch
+            {
+                return View("Error", new ErrorViewModel());
+            }
+        }
+
+        // PUT: Account/Freeze/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Freeze(Account Account)
+        {
+            Account.Status = "Frozen";
+            var uri = $"Account/{Account.Id}";
+            var request = CreateRequestToService(HttpMethod.Put, uri, Account);
+            try
+            {
+                var response = await HttpClient.SendAsync(request);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
+                string jsonString = await response.Content.ReadAsStringAsync();
+                var account = JsonConvert.DeserializeObject<Account>(jsonString);
+
+                return View("Details", Account);
             }
             catch
             {
@@ -140,7 +182,7 @@ namespace SecureXWebApp.Controllers
                 try
                 {
                     var response = await HttpClient.SendAsync(request);
-                    if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                    if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
 
                     return View("Index");
                 }

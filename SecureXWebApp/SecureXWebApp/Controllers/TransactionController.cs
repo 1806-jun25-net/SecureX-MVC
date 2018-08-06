@@ -26,7 +26,7 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 List<Transaction> transactions = JsonConvert.DeserializeObject<List<Transaction>>(jsonString);
                 List<Transaction> customerTransactions = new List<Transaction>();
@@ -36,7 +36,7 @@ namespace SecureXWebApp.Controllers
                 try
                 {
                     response = await HttpClient.SendAsync(request);
-                    if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                    if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
                     jsonString = await response.Content.ReadAsStringAsync();
                     List<Account> accounts = JsonConvert.DeserializeObject<List<Account>>(jsonString);
                     if (TempData["CustomerId"] != null)
@@ -77,7 +77,7 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 Transaction transaction = JsonConvert.DeserializeObject<Transaction>(jsonString);
                 return View(transaction);
@@ -97,9 +97,9 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
-                List<Account> accounts = JsonConvert.DeserializeObject<List<Account>>(jsonString);                
+                List<Account> accounts = JsonConvert.DeserializeObject<List<Account>>(jsonString);
                 if (TempData["CustomerId"] != null)
                 {
                     var sCustomerId = (int)TempData.Peek("CustomerId");
@@ -110,7 +110,7 @@ namespace SecureXWebApp.Controllers
                 List<int> accountIds = new List<int>();
                 foreach (var account in accounts)
                 {
-                    if(account.Status == "Active") accountIds.Add(account.Id);
+                    if (account.Status == "Active") accountIds.Add(account.Id);
                 }
                 transactionVM.AccountIds = accountIds;
                 if (transactionVM.AccountIds.Count() == 0) return View("Error", new ErrorViewModel("No active accounts available to make a transaction."));
@@ -134,7 +134,7 @@ namespace SecureXWebApp.Controllers
             }
             try
             {
-                if(transactionVM.Type == "Withdrawl")
+                if (transactionVM.Type == "Withdrawl")
                 {
                     transactionVM.Transaction.TransactionAmount *= -1;
                 }
@@ -143,7 +143,7 @@ namespace SecureXWebApp.Controllers
                 var uri = $"Transaction";
                 var request = CreateRequestToService(HttpMethod.Post, uri, transactionVM.Transaction);
                 var response = await HttpClient.SendAsync(request);
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
 
                 return RedirectToAction(nameof(Index));
             }

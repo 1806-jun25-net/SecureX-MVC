@@ -27,7 +27,7 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 List<Customer> customers = JsonConvert.DeserializeObject<List<Customer>>(jsonString);
                 return View(customers);
@@ -47,7 +47,7 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 Customer customer = JsonConvert.DeserializeObject<Customer>(jsonString);
                 return View(customer);
@@ -79,7 +79,7 @@ namespace SecureXWebApp.Controllers
                 var uri = $"Customer/{Customer.Id}";
                 var request = CreateRequestToService(HttpMethod.Post, uri, Customer);
                 var response = await HttpClient.SendAsync(request);
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -105,7 +105,7 @@ namespace SecureXWebApp.Controllers
             try
             {
                 var response = await HttpClient.SendAsync(request);
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 var customer = JsonConvert.DeserializeObject<Customer>(jsonString);
 
@@ -135,7 +135,7 @@ namespace SecureXWebApp.Controllers
                 try
                 {
                     var response = await HttpClient.SendAsync(request);
-                    if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                    if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
 
                     return View("Index");
                 }

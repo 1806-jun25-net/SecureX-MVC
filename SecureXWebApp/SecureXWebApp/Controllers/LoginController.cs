@@ -44,13 +44,13 @@ namespace SecureXWebApp.Controllers
                 var uri = "Login/Register";
                 HttpRequestMessage request = CreateRequestToService(HttpMethod.Post, uri, login);
                 HttpResponseMessage response = await HttpClient.SendAsync(request);
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
 
                 // post login/login
                 uri = "Login/Login";
                 request = CreateRequestToService(HttpMethod.Post, uri, login);
                 response = await HttpClient.SendAsync(request);
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
 
                 PassCookiesToClient(response);
 
@@ -60,12 +60,12 @@ namespace SecureXWebApp.Controllers
                 uri = "Customer";
                 request = CreateRequestToService(HttpMethod.Post, uri, customer);
                 response = await HttpClient.SendAsync(request);
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
 
                 // get customer id
                 request = CreateRequestToService(HttpMethod.Get, uri);
                 response = await HttpClient.SendAsync(request);
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
                 string jsonString = await response.Content.ReadAsStringAsync();
                 List<Customer> customers = JsonConvert.DeserializeObject<List<Customer>>(jsonString);
                 var customerId = customers.First(x => x.UserName == login.UserName).Id;
@@ -77,7 +77,7 @@ namespace SecureXWebApp.Controllers
                 uri = "User";
                 request = CreateRequestToService(HttpMethod.Post, uri, user);
                 response = await HttpClient.SendAsync(request);
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
 
                 // tempdata
                 TempData["UserName"] = login.UserName;
@@ -121,7 +121,7 @@ namespace SecureXWebApp.Controllers
                     ViewData["ErrorMessage"] = "Login credentials are invalid. Please try again or register if new.";
                     return View();
                 }
-                if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
             }
 
             PassCookiesToClient(response);
@@ -130,13 +130,13 @@ namespace SecureXWebApp.Controllers
             var uri = "Customer";
             request = CreateRequestToService(HttpMethod.Get, uri);
             response = await HttpClient.SendAsync(request);
-            if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+            if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
             string jsonString = await response.Content.ReadAsStringAsync();
             List<Customer> customers = JsonConvert.DeserializeObject<List<Customer>>(jsonString);
             var customer = customers.FirstOrDefault(x => x.UserName == login.UserName);
 
             TempData["UserName"] = login.UserName;
-            if(customer != null && login.UserName != "Employee")TempData["CustomerId"] = customer.Id;
+            if (customer != null && login.UserName != "Employee") TempData["CustomerId"] = customer.Id;
 
             return RedirectToAction("Index", "Home");
         }
@@ -161,7 +161,7 @@ namespace SecureXWebApp.Controllers
                 return View("Error", new ErrorViewModel());
             }
 
-            if (CheckIfErrorStatusCode(response)) SelectErrorView(response);
+            if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
 
             PassCookiesToClient(response);
 
