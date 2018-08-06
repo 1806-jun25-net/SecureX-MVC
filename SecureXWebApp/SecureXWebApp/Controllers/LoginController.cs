@@ -81,7 +81,7 @@ namespace SecureXWebApp.Controllers
 
                 // tempdata
                 TempData["UserName"] = login.UserName;
-                if (customer != null && login.UserName != "Employee") TempData["CustomerId"] = customer.Id;
+                TempData["CustomerId"] = customerId;
 
             }
             catch
