@@ -73,7 +73,7 @@ namespace SecureXWebApp.Controllers
                 }
                 catch
                 {
-                    return View("Error", new ErrorViewModel("Failed to load cutomer info."));
+                    return View("Error", new ErrorViewModel("Failed to load customer info."));
                 }
             }
             catch
