@@ -56,7 +56,7 @@ namespace SecureXWebApp.Controllers
             else return false;
         }
 
-        protected IActionResult SelectErrorView(HttpResponseMessage response)
+        protected ActionResult SelectErrorView(HttpResponseMessage response)
         {
             if (response.StatusCode == HttpStatusCode.BadRequest) return View("Error", new ErrorViewModel("400: Bad Request","Sorry, there was something wrong with your request."));
             else if (response.StatusCode == HttpStatusCode.Unauthorized) return View("Error", new ErrorViewModel("401: Unauthorized", "Access denied. Try logging in first."));
