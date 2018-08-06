@@ -1,0 +1,53 @@
+﻿@model SecureXWebApp.Models.Account
+
+@{
+    ViewData["Title"] = "Freeze Account";
+}
+
+<h2>Freeze Account</h2>
+
+<h3>Are you sure you want to freeze this account?</h3>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Freeze">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group" hidden>
+                <label asp-for="CustomerId" class="control-label"></label>
+                <input asp-for="CustomerId" class="form-control" readonly="readonly"/>
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <div class="form-control" readonly="readonly">
+                @if (Model.Id < 10) {<text>XXXXX000</text>@Html.DisplayFor(model => model.Id)}
+                else if (Model.Id < 100) {<text>XXXXX00</text>@Html.DisplayFor(model => model.Id)}
+                else if (Model.Id < 1000) {<text>XXXXX0</text>@Html.DisplayFor(model => model.Id)}
+                else if (Model.Id < 10000) {<text>XXXXX</text>@Html.DisplayFor(model => model.Id)}
+                else if (Model.Id < 100000) {<text>XXXXX</text>@Model.Id.ToString().Substring(Math.Max(0, Model.Id.ToString().Length - 4))}
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccountType" class="control-label"></label>
+                <input asp-for="AccountType" class="form-control" readonly="readonly"/>
+                <span asp-validation-for="AccountType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Funds" class="control-label"></label>
+                <input asp-for="Funds" class="form-control" readonly="readonly"/>
+                <span asp-validation-for="Funds" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" readonly="readonly"/>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Freeze" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back to My Accounts</a>
+</div>
