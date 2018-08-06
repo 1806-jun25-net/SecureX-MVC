@@ -161,14 +161,18 @@ namespace SecureXWebApp.Controllers
                 return View("Error", new ErrorViewModel());
             }
 
-            if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
-
-            PassCookiesToClient(response);
-
-            TempData["UserName"] = null;
-            TempData["CustomerId"] = null;
-
-            return RedirectToAction("Index", "Home");
+            if (CheckIfErrorStatusCode(response) && (TempData["UserName"] == null || TempData["CustomerId"] == null))
+            {
+                PassCookiesToClient(response);
+                return SelectErrorView(response);                
+            }
+            else
+            {
+                TempData["UserName"] = null;
+                TempData["CustomerId"] = null;
+                PassCookiesToClient(response);
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         private bool PassCookiesToClient(HttpResponseMessage apiResponse)
