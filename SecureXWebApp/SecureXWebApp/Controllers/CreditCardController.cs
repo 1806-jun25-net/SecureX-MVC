@@ -141,6 +141,48 @@ namespace SecureXWebApp.Controllers
             }
         }
 
+        // GET: CreditCard/Approve/5
+        public async Task<IActionResult> Approve(int id)
+        {
+            var uri = $"CreditCard/{id}";
+            var request = CreateRequestToService(HttpMethod.Get, uri);
+            try
+            {
+                var response = await HttpClient.SendAsync(request);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
+                string jsonString = await response.Content.ReadAsStringAsync();
+                CreditCard creditCard = JsonConvert.DeserializeObject<CreditCard>(jsonString);
+                return View(creditCard);
+            }
+            catch
+            {
+                return View("Error", new ErrorViewModel());
+            }
+        }
+
+        // PUT: CreditCard/Approve/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Approve(CreditCard CreditCard)
+        {
+            CreditCard.Status = "Active";
+            var uri = $"CreditCard/{CreditCard.Id}";
+            var request = CreateRequestToService(HttpMethod.Put, uri, CreditCard);
+            try
+            {
+                var response = await HttpClient.SendAsync(request);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
+                string jsonString = await response.Content.ReadAsStringAsync();
+                var creditCard = JsonConvert.DeserializeObject<CreditCard>(jsonString);
+
+                return View("Details", CreditCard);
+            }
+            catch
+            {
+                return View("Error", new ErrorViewModel());
+            }
+        }
+
         // GET: CreditCard/Delete/5
         public ActionResult Delete(int id)
         {

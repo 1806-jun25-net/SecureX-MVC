@@ -37,11 +37,23 @@
                     }
                     @if (TempData["UserName"] != null)
                     {
-                        <li><a asp-area="" asp-controller="Login" asp-action="Logout">Logout</a></li>
-                        <li><a asp-area="" asp-controller="User" asp-action="Profile">Profile</a></li>
-                        <li><a asp-area="" asp-controller="Account" asp-action="Index">My Accounts</a></li>
-                        <li><a asp-area="" asp-controller="CreditCard" asp-action="Index">My Credit</a></li>
-                        <li><a asp-area="" asp-controller="Transaction" asp-action="Index">Transactions</a></li>
+                        var userName = (string)TempData.Peek("UserName");
+                        if (userName == "Employee")
+                        {
+                            <li><a asp-area="" asp-controller="Login" asp-action="Logout">Logout</a></li>
+                            <li><a asp-area="" asp-controller="Account" asp-action="Index">All Accounts</a></li>
+                            <li><a asp-area="" asp-controller="CreditCard" asp-action="Index">All Credit</a></li>
+                            
+                        }
+                        else
+                        {
+                            <li><a asp-area="" asp-controller="Login" asp-action="Logout">Logout</a></li>
+                            <li><a asp-area="" asp-controller="User" asp-action="Profile">Profile</a></li>
+                            <li><a asp-area="" asp-controller="Account" asp-action="Index">My Accounts</a></li>
+                            <li><a asp-area="" asp-controller="CreditCard" asp-action="Index">My Credit</a></li>
+                            <li><a asp-area="" asp-controller="Transaction" asp-action="Index">Transactions</a></li>
+                        }
+                        TempData.Keep("UserName");
                     }
 
                     @if (TempData["UserName"] != null)

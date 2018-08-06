@@ -164,6 +164,48 @@ namespace SecureXWebApp.Controllers
             }
         }
 
+        // GET: Account/Approve/5
+        public async Task<IActionResult> Approve(int id)
+        {
+            var uri = $"Account/{id}";
+            var request = CreateRequestToService(HttpMethod.Get, uri);
+            try
+            {
+                var response = await HttpClient.SendAsync(request);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
+                string jsonString = await response.Content.ReadAsStringAsync();
+                Account account = JsonConvert.DeserializeObject<Account>(jsonString);
+                return View(account);
+            }
+            catch
+            {
+                return View("Error", new ErrorViewModel());
+            }
+        }
+
+        // PUT: Account/Approve/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Approve(Account Account)
+        {
+            Account.Status = "Active";
+            var uri = $"Account/{Account.Id}";
+            var request = CreateRequestToService(HttpMethod.Put, uri, Account);
+            try
+            {
+                var response = await HttpClient.SendAsync(request);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
+                string jsonString = await response.Content.ReadAsStringAsync();
+                var account = JsonConvert.DeserializeObject<Account>(jsonString);
+
+                return View("Details", Account);
+            }
+            catch
+            {
+                return View("Error", new ErrorViewModel());
+            }
+        }
+
         // GET: Account/Delete/5
         public ActionResult Delete(int id)
         {

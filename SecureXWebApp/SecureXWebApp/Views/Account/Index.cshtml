@@ -51,7 +51,14 @@
                     @Html.DisplayFor(modelItem => item.Status)
                 </td>
                 <td>
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) | @Html.ActionLink("Freeze", "Freeze", new { id = item.Id })
+                    @{
+                        var userName = (string)TempData.Peek("UserName");
+                    }
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) | @Html.ActionLink("Freeze", "Freeze", new { id = item.Id }) @if (userName == "Employee")
+                    {
+                        <text> | </text>@Html.ActionLink("Approve", "Approve", new { id = item.Id })
+                        TempData.Keep("UserName");
+                    }
                 </td>
             </tr>
         }
