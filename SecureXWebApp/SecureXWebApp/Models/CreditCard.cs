@@ -23,7 +23,6 @@ namespace SecureXWebApp.Models
         public decimal CurrentDebt { get; set; }
 
         [Required]
-        [CreditCard]
         [Display(Name = "Card Number")]
         public long CreditCardNumber { get; set; }
 
