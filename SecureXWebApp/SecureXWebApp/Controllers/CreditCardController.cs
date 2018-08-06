@@ -99,6 +99,48 @@ namespace SecureXWebApp.Controllers
             }
         }
 
+        // GET: CreditCard/Freeze/5
+        public async Task<IActionResult> Freeze(int id)
+        {
+            var uri = $"CreditCard/{id}";
+            var request = CreateRequestToService(HttpMethod.Get, uri);
+            try
+            {
+                var response = await HttpClient.SendAsync(request);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
+                string jsonString = await response.Content.ReadAsStringAsync();
+                CreditCard creditCard = JsonConvert.DeserializeObject<CreditCard>(jsonString);
+                return View(creditCard);
+            }
+            catch
+            {
+                return View("Error", new ErrorViewModel());
+            }
+        }
+
+        // PUT: CreditCard/Freeze/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Freeze(CreditCard CreditCard)
+        {
+            CreditCard.Status = "Frozen";
+            var uri = $"CreditCard/{CreditCard.Id}";
+            var request = CreateRequestToService(HttpMethod.Put, uri, CreditCard);
+            try
+            {
+                var response = await HttpClient.SendAsync(request);
+                if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
+                string jsonString = await response.Content.ReadAsStringAsync();
+                var creditCard = JsonConvert.DeserializeObject<CreditCard>(jsonString);
+
+                return View("Details", CreditCard);
+            }
+            catch
+            {
+                return View("Error", new ErrorViewModel());
+            }
+        }
+
         // GET: CreditCard/Delete/5
         public ActionResult Delete(int id)
         {

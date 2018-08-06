@@ -52,7 +52,7 @@
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                @Html.ActionLink("Details", "Details", new { id = item.Id })
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) | @Html.ActionLink("Freeze", "Freeze", new { id = item.Id })
             </td>
         </tr>
 }

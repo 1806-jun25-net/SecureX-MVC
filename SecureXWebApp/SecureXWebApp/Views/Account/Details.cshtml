@@ -47,7 +47,7 @@
     </dl>
 </div>
 
-<li><a asp-area="" asp-controller="Transaction" asp-action="Index">Transactions</a></li>
+<p>@Html.ActionLink("Freeze", "Freeze", new { id = Model.Id })</p>
 
 <div>
     <a asp-action="Index">Back to My Accounts</a>
