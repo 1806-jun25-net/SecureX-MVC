@@ -13,9 +13,9 @@
         <form asp-action="Create">
             <div class="form-group">
                 <label asp-for="Type" class="control-label">Deposit</label>
-                @Html.RadioButtonFor(m => m.Type, "Savings")
+                @Html.RadioButtonFor(m => m.Type, "Deposit")
                 <label asp-for="Type" class="control-label">Withdrawl</label>
-                @Html.RadioButtonFor(m => m.Type, "Checking")
+                @Html.RadioButtonFor(m => m.Type, "Withdrawl")
                 <span asp-validation-for="Type" class="text-danger"></span>
 
             </div>
