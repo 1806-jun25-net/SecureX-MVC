@@ -134,6 +134,7 @@ namespace SecureXWebApp.Controllers
             }
             try
             {
+                // post the transaction
                 if (transactionVM.Type == "Withdrawl")
                 {
                     transactionVM.Transaction.TransactionAmount *= -1;
@@ -144,8 +145,38 @@ namespace SecureXWebApp.Controllers
                 var request = CreateRequestToService(HttpMethod.Post, uri, transactionVM.Transaction);
                 var response = await HttpClient.SendAsync(request);
                 if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
+                
+                try
+                {
+                    // get the account to update
+                    uri = $"Account/{transactionVM.Transaction.AccountId}";
+                    request = CreateRequestToService(HttpMethod.Get, uri);
+                    response = await HttpClient.SendAsync(request);
+                    if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
+                    string jsonString = await response.Content.ReadAsStringAsync();
+                    Account account = JsonConvert.DeserializeObject<Account>(jsonString);
+                    
+                    try
+                    {
+                        // update account funds
+                        account.Funds += transactionVM.Transaction.TransactionAmount; // apply transaction amount to account funds
+                        uri = $"Account/{account.Id}";
+                        request = CreateRequestToService(HttpMethod.Put, uri, account);
+                        response = await HttpClient.SendAsync(request);
+                        if (CheckIfErrorStatusCode(response)) return SelectErrorView(response);
 
-                return RedirectToAction(nameof(Index));
+                        return RedirectToAction(nameof(Index));
+                    }
+                    catch
+                    {
+                        return View("Error", new ErrorViewModel());
+                    }
+
+                }
+                catch
+                {
+                    return View("Error", new ErrorViewModel());
+                }                                
             }
             catch
             {
