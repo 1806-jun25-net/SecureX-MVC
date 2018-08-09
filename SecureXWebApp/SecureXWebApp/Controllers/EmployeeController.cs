@@ -12,7 +12,7 @@ namespace SecureXWebApp.Controllers
 {
     public class EmployeeController : AServiceController
     {
-        public EmployeeController(HttpClient httpClient) : base(httpClient)
+        public EmployeeController(HttpClient httpClient, Settings settings) : base(httpClient, settings)
         { }
 
         // GET: Employee

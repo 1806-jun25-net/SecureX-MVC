@@ -15,7 +15,7 @@ namespace SecureXWebApp.Controllers
 
     public class CustomerController : AServiceController
     {
-        public CustomerController(HttpClient httpClient) : base(httpClient)
+        public CustomerController(HttpClient httpClient, Settings settings) : base(httpClient, settings)
         { }
 
         //GET: Customer

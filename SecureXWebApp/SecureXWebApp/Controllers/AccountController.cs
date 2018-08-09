@@ -14,7 +14,7 @@ namespace SecureXWebApp.Controllers
 {
     public class AccountController : AServiceController
     {
-        public AccountController(HttpClient httpClient) : base(httpClient)
+        public AccountController(HttpClient httpClient, Settings settings) : base(httpClient, settings)
         { }
 
         //GET: Account

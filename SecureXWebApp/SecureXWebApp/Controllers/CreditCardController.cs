@@ -14,7 +14,7 @@ namespace SecureXWebApp.Controllers
 {
     public class CreditCardController : AServiceController
     {
-        public CreditCardController(HttpClient httpClient) : base(httpClient)
+        public CreditCardController(HttpClient httpClient, Settings settings) : base(httpClient, settings)
         { }
 
         //GET: CreditCard

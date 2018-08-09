@@ -11,7 +11,7 @@ namespace SecureXWebApp.Controllers
 {
     public class HomeController : AServiceController
     {
-        public HomeController(HttpClient httpClient) : base(httpClient)
+        public HomeController(HttpClient httpClient, Settings settings) : base(httpClient, settings)
         { }
 
         public IActionResult Index()

@@ -13,7 +13,7 @@ namespace SecureXWebApp.Controllers
 {
     public class BankController : AServiceController
     {
-        public BankController(HttpClient httpClient) : base(httpClient)
+        public BankController(HttpClient httpClient, Settings settings) : base(httpClient, settings)
         { }
 
         // GET: Bank

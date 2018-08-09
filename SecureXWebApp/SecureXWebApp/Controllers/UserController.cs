@@ -13,7 +13,7 @@ namespace SecureXWebApp.Controllers
 {
     public class UserController : AServiceController
     {
-        public UserController(HttpClient httpClient) : base(httpClient)
+        public UserController(HttpClient httpClient, Settings settings) : base(httpClient, settings)
         { }
 
         //GET: User

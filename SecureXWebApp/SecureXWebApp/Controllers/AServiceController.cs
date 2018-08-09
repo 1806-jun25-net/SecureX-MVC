@@ -14,19 +14,19 @@ namespace SecureXWebApp.Controllers
 {
     public abstract class AServiceController : Controller
     {
-        private static readonly Uri s_serviceUri = new Uri("http://securex-api.azurewebsites.net/api/");
+        private static readonly Uri s_serviceUri = Settings.ServiceUri;
         protected static readonly string s_CookieName = "SecureXApiAuth";
 
         protected HttpClient HttpClient { get; }
+        protected static Settings Settings { get; set; }
 
-        public AServiceController(HttpClient httpClient)
+        public AServiceController(HttpClient httpClient, Settings settings)
         {
-            // don't forget to register HttpClient as a singleton service in Startup.cs,
-            // with the right HttpClientHandler
             HttpClient = httpClient;
+            Settings = settings;
         }
 
-        protected HttpRequestMessage CreateRequestToService(HttpMethod method, string uri, object body = null)
+    protected HttpRequestMessage CreateRequestToService(HttpMethod method, string uri, object body = null)
         {
             var apiRequest = new HttpRequestMessage(method, new Uri(s_serviceUri, uri));
 

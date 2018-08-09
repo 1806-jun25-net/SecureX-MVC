@@ -14,7 +14,7 @@ namespace SecureXWebApp.Controllers
 {
     public class TransactionController : AServiceController
     {
-        public TransactionController(HttpClient httpClient) : base(httpClient)
+        public TransactionController(HttpClient httpClient, Settings settings) : base(httpClient, settings)
         { }
 
         //GET: Transaction

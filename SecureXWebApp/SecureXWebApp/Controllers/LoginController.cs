@@ -23,7 +23,7 @@ namespace SecureXWebApp.Controllers
         // especially since if i want to put something dynamic in the layout / navbar for my user,
         // then that would be every request.
 
-        public LoginController(HttpClient httpClient) : base(httpClient)
+        public LoginController(HttpClient httpClient, Settings settings) : base(httpClient, settings)
         { }
 
         // GET: User/Register

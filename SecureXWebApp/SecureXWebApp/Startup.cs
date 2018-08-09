@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SecureXWebApp.Models;
 
 namespace SecureXWebApp
 {
@@ -34,7 +35,8 @@ namespace SecureXWebApp
 
             services.AddSingleton(sp =>
                 new HttpClient(new HttpClientHandler { UseCookies = false }));
-
+            services.AddSingleton<IConfiguration>(Configuration);
+            services.AddSingleton<Settings>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
